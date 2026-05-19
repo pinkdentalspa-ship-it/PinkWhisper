@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pink Dental Spa - Modern Glassmorphism Assessment</title>
+    <!-- استدعاء مكتبة المفرقعات الاحتفالية (Confetti) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            /* خلفية بتدرج لوني ناعم يتحرك ببطء لإبراز تأثير الزجاج */
+            background: linear-gradient(135deg, #fff5f8 0%, #ffffff 50%, #ffe6f0 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* حاوية الخلفية مع أنميشن الـ Blur المطور */
+        .bg-slider {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            opacity: 0.85;
+            filter: blur(0px);
+            transform: scale(1);
+            transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bg-blur-effect {
+            filter: blur(60px);
+            transform: scale(1.1);
+        }
+
+        /* طبقة بيضاء خفيفة جداً للحفاظ على تباين النص */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.25);
+            z-index: 1;
+        }
+
+        /* كانفاس الدخان الوردي الخفيف */
+        #smokeCanvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        /* التطبيق الاحترافي للـ Modern Glassmorphism */
+        .quiz-container {
+            position: relative;
+            z-index: 3;
+            /* زجاج ناصع وشبه شفاف */
+            background: rgba(255, 255, 255, 0.4); 
+            /* تأثير التغبيش العميق خلف الزجاج */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            /* حافة بيضاء رفيعة جداً تعطي إيحاء لمعان الزجاج */
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 40px 30px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 460px;
+            color: #222222;
+            /* ظلال ناعمة جداً ومشتتة بدون حدة لتناسب التصميم الحديث */
+            box-shadow: 0 20px 50px rgba(255, 20, 147, 0.05), 
+                        0 10px 20px rgba(0, 0, 0, 0.02),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transform: scale(1);
+            opacity: 1;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease-in-out;
+        }
+
+        .quiz-pull-out {
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        .quiz-pull-in-prepare {
+            transform: scale(1.1);
+            opacity: 0;
+            transition: none;
+        }
+
+        h2 {
+            margin-bottom: 35px;
+            font-size: 1.35rem;
+            line-height: 1.6;
+            font-weight: 700;
+            color: #2c2c2c;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* أزرار زجاجية متناسقة مع الهوية الوردية (Glass Buttons) */
+        .option-btn {
+            background: rgba(255, 20, 147, 0.12);
+            /* حافة زجاجية وردية ناعمة */
+            border: 1px solid rgba(255, 20, 147, 0.25);
+            padding: 18px 24px;
+            border-radius: 18px;
+            color: #d11075;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            text-align: right;
+            width: 100%;
+            outline: none;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 20, 147, 0.85);
+            border-color: rgba(255, 20, 147, 0.9);
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.25);
+        }
+
+        /* أنميشن الاختيار الفاخر */
+        @keyframes glassSelected {
+            0% { 
+                background: rgba(255, 20, 147, 0.85);
+                color: #ffffff;
+            }
+            100% { 
+                background: rgba(255, 255, 255, 0.9);
+                border-color: #ff1493;
+                color: #ff1493;
+                transform: scale(1.03);
+                box-shadow: 0 8px 20px rgba(255, 20, 147, 0.15);
+            }
+        }
+
+        .btn-selected {
+            animation: glassSelected 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            pointer-events: none;
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.25;
+            transform: scale(0.98);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* شاشة النهاية المينيماليست الفخمة */
+        .result-screen-active {
+            background: #ffffff !important;
+        }
+
+        .result-screen-active .overlay, 
+        .result-screen-active #bg-layer {
+            display: none !important;
+        }
+
+        .result-screen-active .quiz-container {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .result-badge {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: #ff1493;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInResult 1s ease-out forwards;
+        }
+
+        @keyframes fadeInResult {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- عناصر الخلفية المضيئة -->
+    <div class="bg-slider" id="bg-layer"></div>
+    <div class="overlay" id="overlay-layer"></div>
+
+    <!-- كانفاس الدخان الوردي -->
+    <canvas id="smokeCanvas"></canvas>
+
+    <!-- حاوية الزجاج الذكية -->
+    <div class="quiz-container" id="quiz-box">
+        <div id="question-screen">
+            <h2 id="question-text">جاري تحضير تجربة الـ Spa...</h2>
+            <div class="options-list" id="options-container"></div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div id="badge-container" class="result-badge"></div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "كم مرة تشرب قهوة او شاي يوميا؟",
+                options: ["ولا مرة", "مرة او مرتان", "من ثلاث الى خمس مرات", "عايش عليها"],
+                scores: [0, 2, 4, 5],
+                image: "https://i.ibb.co/WWvw1mgq/image.png"
+            },
+            {
+                question: "هل تدخن؟",
+                options: ["لا", "احيانا", "يوميا", "النفس صار ماك"],
+                scores: [0, 2, 4, 5],
+                image: "https://i.ibb.co/KxF755V7/image.png"
+            },
+            {
+                question: "اخر مرة سويت تنظيف احترافي؟",
+                options: ["اقل من ستة اشهر", "سنة", "ما اتذكر", "شنو يعني تنظيف احترافي"],
+                scores: [0, 2, 4, 5],
+                image: "https://i.ibb.co/nGhxyhY/Screenshot-20260519-162401-Gallery.jpg"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let totalScore = 0;
+
+        const quizBox = document.getElementById('quiz-box');
+        const bgLayer = document.getElementById('bg-layer');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const questionScreen = document.getElementById('question-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const badgeContainer = document.getElementById('badge-container');
+        const smokeCanvas = document.getElementById('smokeCanvas');
+
+        function loadQuestion() {
+            const currentData = quizData[currentQuestionIndex];
+            
+            quizBox.classList.remove('quiz-pull-out', 'quiz-pull-in-prepare');
+            bgLayer.classList.remove('bg-blur-effect');
+            
+            bgLayer.style.backgroundImage = `url('${currentData.image}')`;
+            questionText.innerText = currentData.question;
+            optionsContainer.innerHTML = '';
+
+            currentData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-btn');
+                button.innerText = option;
+                button.addEventListener('click', (e) => handleAnswer(e, index));
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function handleAnswer(e, selectedIndex) {
+            const selectedButton = e.target;
+            const allButtons = optionsContainer.querySelectorAll('.option-btn');
+            const currentData = quizData[currentQuestionIndex];
+
+            totalScore += currentData.scores[selectedIndex];
+            selectedButton.classList.add('btn-selected');
+
+            allButtons.forEach(btn => {
+                if (btn !== selectedButton) btn.classList.add('disabled');
+            });
+
+            setTimeout(() => {
+                quizBox.classList.add('quiz-pull-out');
+                bgLayer.classList.add('bg-blur-effect');
+                
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < quizData.length) {
+                        quizBox.style.transition = 'none';
+                        quizBox.classList.remove('quiz-pull-out');
+                        quizBox.classList.add('quiz-pull-in-prepare');
+                        
+                        setTimeout(() => {
+                            quizBox.style.transition = '';
+                            loadQuestion();
+                        }, 50);
+                    } else {
+                        showResults();
+                    }
+                }, 600);
+            }, 600);
+        }
+
+        function triggerConfetti() {
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.8 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.8 } });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        }
+
+        function triggerPinkSmoke() {
+            smokeCanvas.style.opacity = "1";
+            const ctx = smokeCanvas.getContext('2d');
+            
+            function resizeCanvas() {
+                smokeCanvas.width = window.innerWidth;
+                smokeCanvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const particles = [];
+            
+            class SmokeParticle {
+                constructor() {
+                    this.x = Math.random() * smokeCanvas.width;
+                    this.y = smokeCanvas.height + Math.random() * 100;
+                    this.size = Math.random() * 90 + 70;
+                    this.speedY = Math.random() * 0.5 + 0.2;
+                    this.speedX = Math.random() * 0.4 - 0.2;
+                    this.opacity = Math.random() * 0.12 + 0.04; 
+                    this.vs = Math.random() * 0.08 + 0.04;
+                }
+
+                update() {
+                    this.y -= this.speedY;
+                    this.x += this.speedX;
+                    this.size += this.vs;
+                    if (this.y < -this.size) {
+                        this.y = smokeCanvas.height + Math.random() * 50;
+                        this.x = Math.random() * smokeCanvas.width;
+                        this.size = Math.random() * 90 + 70;
+                        this.opacity = Math.random() * 0.12 + 0.04;
+                    }
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    let gradient = ctx.createRadialGradient(this.x, this.y, this.size * 0.1, this.x, this.y, this.size);
+                    gradient.addColorStop(0, `rgba(255, 20, 147, ${this.opacity})`);
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 40; i++) {
+                particles.push(new SmokeParticle());
+            }
+
+            function animateSmoke() {
+                ctx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animateSmoke);
+            }
+            animateSmoke();
+        }
+
+        function showResults() {
+            questionScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            quizBox.style.transition = '';
+            quizBox.classList.remove('quiz-pull-out', 'quiz-pull-in-prepare');
+            
+            document.body.classList.add('result-screen-active');
+            
+            let resultWord = "";
+
+            if (totalScore <= 5) {
+                resultWord = "Pink Fresh";
+                triggerConfetti();
+            } else if (totalScore >= 6 && totalScore <= 11) {
+                resultWord = "Pink Warning 🫣";
+                triggerPinkSmoke();
+            } else if (totalScore >= 12 && totalScore <= 15) {
+                resultWord = "Pink Need ReFresh";
+            }
+
+            badgeContainer.innerText = resultWord;
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
