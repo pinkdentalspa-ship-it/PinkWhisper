@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pink Dental Spa - Modern Glassmorphism Assessment</title>
-    <!-- استدعاء مكتبة المفرقعات الاحتفالية (Confetti) -->
+    <title>Pink Dental Spa - Assessment & Video Intro</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * {
@@ -12,6 +11,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -20,20 +20,11 @@
             align-items: center;
             min-height: 100vh;
             position: relative;
-            /* خلفية بتدرج لوني ناعم يتحرك ببطء لإبراز تأثير الزجاج */
-            background: linear-gradient(135deg, #fff5f8 0%, #ffffff 50%, #ffe6f0 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: #ffffff; 
             overflow: hidden;
+            transition: background-color 1s ease;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* حاوية الخلفية مع أنميشن الـ Blur المطور */
         .bg-slider {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -41,81 +32,110 @@
             background-position: center;
             background-repeat: no-repeat;
             z-index: 0;
-            opacity: 0.85;
+            opacity: 1; 
             filter: blur(0px);
             transform: scale(1);
-            transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
         }
 
         .bg-blur-effect {
-            filter: blur(60px);
-            transform: scale(1.1);
+            filter: blur(4px);
+            transform: scale(1.03);
         }
 
-        /* طبقة بيضاء خفيفة جداً للحفاظ على تباين النص */
         .overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(0, 0, 0, 0.2); 
             z-index: 1;
+            transition: background 1s ease;
         }
 
-        /* كانفاس الدخان الوردي الخفيف */
         #smokeCanvas {
             position: absolute;
             top: 0; left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 2; 
             pointer-events: none;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
+            transition: opacity 1s ease-in-out;
         }
 
-        /* التطبيق الاحترافي للـ Modern Glassmorphism */
         .quiz-container {
             position: relative;
             z-index: 3;
-            /* زجاج ناصع وشبه شفاف */
-            background: rgba(255, 255, 255, 0.4); 
-            /* تأثير التغبيش العميق خلف الزجاج */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            /* حافة بيضاء رفيعة جداً تعطي إيحاء لمعان الزجاج */
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            padding: 40px 30px;
-            border-radius: 30px;
+            background: transparent; 
+            border: none;
+            padding: 20px;
             width: 90%;
-            max-width: 460px;
-            color: #222222;
-            /* ظلال ناعمة جداً ومشتتة بدون حدة لتناسب التصميم الحديث */
-            box-shadow: 0 20px 50px rgba(255, 20, 147, 0.05), 
-                        0 10px 20px rgba(0, 0, 0, 0.02),
-                        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            max-width: 440px;
+            box-shadow: none;
             text-align: center;
             transform: scale(1);
             opacity: 1;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease-in-out;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-in-out;
+        }
+
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .welcome-video {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.2), 0 0 15px rgba(0,0,0,0.1);
+            outline: none;
+            background-color: #000;
+            object-fit: cover;
+        }
+
+        .start-btn {
+            background: rgba(255, 20, 147, 0.15);
+            border: 1px solid rgba(255, 20, 147, 0.5);
+            padding: 16px 60px;
+            border-radius: 30px;
+            color: #ff1493; 
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.1);
+        }
+
+        .start-btn:hover, .start-btn:active {
+            background: rgba(255, 20, 147, 0.8);
+            border-color: #ff1493;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.3);
         }
 
         .quiz-pull-out {
-            transform: scale(0.9);
+            transform: scale(0.92);
             opacity: 0;
         }
 
         .quiz-pull-in-prepare {
-            transform: scale(1.1);
+            transform: scale(1.08);
             opacity: 0;
             transition: none;
         }
 
         h2 {
-            margin-bottom: 35px;
-            font-size: 1.35rem;
+            margin-bottom: 40px;
+            font-size: 1.5rem;
             line-height: 1.6;
             font-weight: 700;
-            color: #2c2c2c;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
         }
 
         .options-list {
@@ -124,45 +144,42 @@
             gap: 16px;
         }
 
-        /* أزرار زجاجية متناسقة مع الهوية الوردية (Glass Buttons) */
         .option-btn {
-            background: rgba(255, 20, 147, 0.12);
-            /* حافة زجاجية وردية ناعمة */
-            border: 1px solid rgba(255, 20, 147, 0.25);
-            padding: 18px 24px;
-            border-radius: 18px;
-            color: #d11075;
+            background: rgba(255, 20, 147, 0.18); 
+            border: 1px solid rgba(255, 20, 147, 0.4); 
+            padding: 20px 24px;
+            border-radius: 20px;
+            color: #ffffff; 
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
             cursor: pointer;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             text-align: right;
             width: 100%;
             outline: none;
         }
 
-        .option-btn:hover {
-            background: rgba(255, 20, 147, 0.85);
-            border-color: rgba(255, 20, 147, 0.9);
+        .option-btn:hover, .option-btn:active {
+            background: rgba(255, 20, 147, 0.45); 
+            border-color: rgba(255, 20, 147, 0.8);
             color: #ffffff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.25);
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.25);
         }
 
-        /* أنميشن الاختيار الفاخر */
         @keyframes glassSelected {
             0% { 
-                background: rgba(255, 20, 147, 0.85);
+                background: rgba(255, 20, 147, 0.45);
                 color: #ffffff;
             }
             100% { 
-                background: rgba(255, 255, 255, 0.9);
+                background: #ff1493; 
                 border-color: #ff1493;
-                color: #ff1493;
-                transform: scale(1.03);
-                box-shadow: 0 8px 20px rgba(255, 20, 147, 0.15);
+                color: #ffffff;
+                text-shadow: none;
+                transform: scale(1.04);
+                box-shadow: 0 10px 25px rgba(255, 20, 147, 0.35);
             }
         }
 
@@ -173,32 +190,32 @@
 
         .disabled {
             pointer-events: none;
-            opacity: 0.25;
-            transform: scale(0.98);
+            opacity: 0.15;
+            transform: scale(0.96);
         }
 
         .hidden {
-            display: none;
-        }
-
-        /* شاشة النهاية المينيماليست الفخمة */
-        .result-screen-active {
-            background: #ffffff !important;
-        }
-
-        .result-screen-active .overlay, 
-        .result-screen-active #bg-layer {
             display: none !important;
         }
 
-        .result-screen-active .quiz-container {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-            width: 100%;
-            max-width: 100%;
+        .pink-warning-mode {
+            background-color: #ffffff !important; 
+        }
+
+        .pink-warning-mode #bg-layer {
+            display: none !important; 
+        }
+
+        .pink-warning-mode .overlay {
+            background: transparent !important; 
+        }
+
+        .pink-warning-mode .result-badge {
+            color: #db0072 !important; 
+            text-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 800;
+            letter-spacing: 2px;
         }
 
         .result-badge {
@@ -207,27 +224,33 @@
             color: #ff1493;
             text-transform: uppercase;
             letter-spacing: 2px;
-            animation: fadeInResult 1s ease-out forwards;
+            animation: fadeInResult 1.2s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
         }
 
         @keyframes fadeInResult {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <!-- عناصر الخلفية المضيئة -->
     <div class="bg-slider" id="bg-layer"></div>
     <div class="overlay" id="overlay-layer"></div>
 
-    <!-- كانفاس الدخان الوردي -->
     <canvas id="smokeCanvas"></canvas>
 
-    <!-- حاوية الزجاج الذكية -->
     <div class="quiz-container" id="quiz-box">
-        <div id="question-screen">
+        
+        <div id="welcome-screen" class="welcome-screen">
+            <video class="welcome-video" loop playsinline id="introVideo">
+                <source src="intro.mp4" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <button class="start-btn" id="start-quiz-btn">START</button>
+        </div>
+
+        <div id="question-screen" class="hidden">
             <h2 id="question-text">جاري تحضير تجربة الـ Spa...</h2>
             <div class="options-list" id="options-container"></div>
         </div>
@@ -238,24 +261,59 @@
     </div>
 
     <script>
+        const clickSound = new Audio('click.wav');
+        clickSound.volume = 0.5;
+
+        let isAudioUnlocked = false;
+
+        function unlockMobileAudio() {
+            if (isAudioUnlocked) return;
+            const playPromise = clickSound.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    clickSound.pause();
+                    clickSound.currentTime = 0;
+                }).catch(err => {});
+            }
+            isAudioUnlocked = true;
+        }
+
         const quizData = [
             {
                 question: "كم مرة تشرب قهوة او شاي يوميا؟",
                 options: ["ولا مرة", "مرة او مرتان", "من ثلاث الى خمس مرات", "عايش عليها"],
                 scores: [0, 2, 4, 5],
-                image: "https://i.ibb.co/WWvw1mgq/image.png"
+                image: "https://i.ibb.co/8nNyBzHJ/Chat-GPT-Image-May-19-2026-08-10-55-PM.png"
             },
             {
                 question: "هل تدخن؟",
-                options: ["لا", "احيانا", "يوميا", "النفس صار ماك"],
+                options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"],
                 scores: [0, 2, 4, 5],
-                image: "https://i.ibb.co/KxF755V7/image.png"
+                image: "https://i.ibb.co/8L8jBprw/Chat-GPT-Image-May-19-2026-08-13-47-PM.png"
             },
             {
-                question: "اخر مرة سويت تنظيف احترافي؟",
-                options: ["اقل من ستة اشهر", "سنة", "ما اتذكر", "شنو يعني تنظيف احترافي"],
-                scores: [0, 2, 4, 5],
-                image: "https://i.ibb.co/nGhxyhY/Screenshot-20260519-162401-Gallery.jpg"
+                question: "هل تشرب ماء كافي يوميا؟",
+                options: ["نعم", "أحياناً", "لا"],
+                scores: [0, 2, 4],
+                image: "https://i.ibb.co/wNCLdfxV/Chat-GPT-Image-May-19-2026-08-12-22-PM.png"
+            },
+            {
+                question: "احد عرض عليك علكة او نعناع بشكل مفاجئ؟",
+                options: ["لا", "احيانا", "مرات متكررة"],
+                scores: [0, 2, 5],
+                image: "https://i.ibb.co/Xfjn6fY7/Chat-GPT-Image-19-2026-08-15-51.png"
+            },
+            {
+                question: "تحس بجفاف بالفم؟",
+                options: ["نادرا", "احيانا", "دائما"],
+                scores: [0, 2, 5],
+                image: "https://i.ibb.co/gbcz4nwL/Chat-GPT-Image-May-19-2026-08-16-45-PM.png"
+            },
+            {
+                question: "تحس الناس تبتعد و انت تحجي؟",
+                options: ["لا", "يمكن", "صارت اكثر من مرة"],
+                scores: [0, 2, 5],
+                image: "https://i.ibb.co/ztkyt1z/d6424df4-f586-4c90-8828-c84638dbab28.png"
             }
         ];
 
@@ -266,10 +324,48 @@
         const bgLayer = document.getElementById('bg-layer');
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
+        
+        const welcomeScreen = document.getElementById('welcome-screen');
         const questionScreen = document.getElementById('question-screen');
         const resultScreen = document.getElementById('result-screen');
         const badgeContainer = document.getElementById('badge-container');
         const smokeCanvas = document.getElementById('smokeCanvas');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const introVideo = document.getElementById('introVideo');
+
+        // تشغيل مبدئي صامت حتى يتفاعل المستخدم
+        introVideo.muted = true;
+        introVideo.play().catch(e => {});
+
+        startQuizBtn.addEventListener('click', () => {
+            unlockMobileAudio();
+            
+            // تشغيل الفيديو مع الصوت من البداية فور الضغط على START
+            introVideo.muted = false;
+            introVideo.currentTime = 0;
+            introVideo.play().catch(e => { console.log("Video playback error:", e) });
+
+            // إضافة تأثير اختفاء تدريجي بسيط متناسق مع نهاية الفيديو
+            setTimeout(() => {
+                quizBox.classList.add('quiz-pull-out');
+            }, 2500); // يبدأ الاختفاء قبل النهاية بنصف ثانية لنعومة الحركة
+
+            // الانتظار 3 ثوانٍ كاملة (مدة الفيديو) قبل الانتقال لشاشة الأسئلة
+            setTimeout(() => {
+                welcomeScreen.classList.add('hidden');
+                questionScreen.classList.remove('hidden');
+                quizBox.classList.remove('quiz-pull-out');
+                quizBox.classList.add('quiz-pull-in-prepare');
+                
+                // إيقاف الفيديو نهائياً عند الانتقال
+                introVideo.pause();
+
+                setTimeout(() => {
+                    quizBox.style.transition = '';
+                    loadQuestion();
+                }, 50);
+            }, 3000); // 3000ms تعادل 3 ثوانٍ بالضبط
+        });
 
         function loadQuestion() {
             const currentData = quizData[currentQuestionIndex];
@@ -296,6 +392,10 @@
             const currentData = quizData[currentQuestionIndex];
 
             totalScore += currentData.scores[selectedIndex];
+            
+            clickSound.currentTime = 0;
+            clickSound.play().catch(e => {});
+
             selectedButton.classList.add('btn-selected');
 
             allButtons.forEach(btn => {
@@ -305,7 +405,7 @@
             setTimeout(() => {
                 quizBox.classList.add('quiz-pull-out');
                 bgLayer.classList.add('bg-blur-effect');
-                
+
                 setTimeout(() => {
                     currentQuestionIndex++;
                     if (currentQuestionIndex < quizData.length) {
@@ -327,7 +427,6 @@
         function triggerConfetti() {
             var duration = 3 * 1000;
             var end = Date.now() + duration;
-
             (function frame() {
                 confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.8 } });
                 confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.8 } });
@@ -335,7 +434,7 @@
             }());
         }
 
-        function triggerPinkSmoke() {
+        function triggerCustomPinkSmoke() {
             smokeCanvas.style.opacity = "1";
             const ctx = smokeCanvas.getContext('2d');
             
@@ -346,83 +445,100 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
 
-            const particles = [];
+            const smokeParticles = [];
+            const sparkleParticles = [];
             
             class SmokeParticle {
-                constructor() {
-                    this.x = Math.random() * smokeCanvas.width;
-                    this.y = smokeCanvas.height + Math.random() * 100;
-                    this.size = Math.random() * 90 + 70;
-                    this.speedY = Math.random() * 0.5 + 0.2;
-                    this.speedX = Math.random() * 0.4 - 0.2;
-                    this.opacity = Math.random() * 0.12 + 0.04; 
-                    this.vs = Math.random() * 0.08 + 0.04;
+                constructor() { this.reset(true); }
+                reset(init = false) {
+                    this.x = init ? Math.random() * (smokeCanvas.width * 0.3) : -Math.random() * 50;
+                    this.y = Math.random() * smokeCanvas.height;
+                    this.size = Math.random() * 140 + 110;
+                    this.speedX = Math.random() * 0.7 + 0.3;
+                    this.speedY = Math.random() * 0.4 - 0.2;
+                    this.opacity = Math.random() * 0.24 + 0.08; 
+                    this.vs = Math.random() * 0.1 + 0.05;
                 }
-
                 update() {
-                    this.y -= this.speedY;
                     this.x += this.speedX;
+                    this.y += this.speedY;
                     this.size += this.vs;
-                    if (this.y < -this.size) {
-                        this.y = smokeCanvas.height + Math.random() * 50;
-                        this.x = Math.random() * smokeCanvas.width;
-                        this.size = Math.random() * 90 + 70;
-                        this.opacity = Math.random() * 0.12 + 0.04;
-                    }
+                    if (this.x > smokeCanvas.width * 0.55) { this.opacity -= 0.003; }
+                    if (this.x > smokeCanvas.width || this.opacity <= 0) { this.reset(); }
                 }
-
                 draw() {
+                    if (this.opacity <= 0) return;
                     ctx.beginPath();
-                    let gradient = ctx.createRadialGradient(this.x, this.y, this.size * 0.1, this.x, this.y, this.size);
-                    gradient.addColorStop(0, `rgba(255, 20, 147, ${this.opacity})`);
+                    let gradient = ctx.createRadialGradient(this.x, this.y, this.size * 0.05, this.x, this.y, this.size);
+                    gradient.addColorStop(0, `rgba(235, 20, 147, ${this.opacity})`); 
+                    gradient.addColorStop(0.5, `rgba(255, 105, 180, ${this.opacity * 0.4})`);
                     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                    
                     ctx.fillStyle = gradient;
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
 
-            for (let i = 0; i < 40; i++) {
-                particles.push(new SmokeParticle());
+            class SparkleParticle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * (smokeCanvas.width * 0.45);
+                    this.y = Math.random() * smokeCanvas.height;
+                    this.size = Math.random() * 2.5 + 1;
+                    this.speedX = Math.random() * 1.1 + 0.4;
+                    this.speedY = Math.random() * 0.6 - 0.3;
+                    this.opacity = Math.random() * 0.9 + 0.3;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x > smokeCanvas.width * 0.5) { this.opacity -= 0.015; }
+                    if (this.x > smokeCanvas.width || this.opacity <= 0) { this.reset(); }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.fillStyle = `rgba(219, 0, 114, ${this.opacity})`; 
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = "#ff1493";
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
             }
 
-            function animateSmoke() {
+            for (let i = 0; i < 35; i++) smokeParticles.push(new SmokeParticle());
+            for (let i = 0; i < 25; i++) sparkleParticles.push(new SparkleParticle());
+
+            function animate() {
                 ctx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
-                particles.forEach(p => {
-                    p.update();
-                    p.draw();
-                });
-                requestAnimationFrame(animateSmoke);
+                smokeParticles.forEach(p => { p.update(); p.draw(); });
+                sparkleParticles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
             }
-            animateSmoke();
+            animate();
         }
 
         function showResults() {
             questionScreen.classList.add('hidden');
             resultScreen.classList.remove('hidden');
-            
             quizBox.style.transition = '';
             quizBox.classList.remove('quiz-pull-out', 'quiz-pull-in-prepare');
             
-            document.body.classList.add('result-screen-active');
-            
             let resultWord = "";
-
-            if (totalScore <= 5) {
+            if (totalScore <= 9) {
                 resultWord = "Pink Fresh";
                 triggerConfetti();
-            } else if (totalScore >= 6 && totalScore <= 11) {
+            } else if (totalScore >= 10 && totalScore <= 20) {
+                document.body.classList.add('pink-warning-mode');
                 resultWord = "Pink Warning 🫣";
-                triggerPinkSmoke();
-            } else if (totalScore >= 12 && totalScore <= 15) {
+                triggerCustomPinkSmoke(); 
+            } else if (totalScore >= 21) {
+                document.body.classList.add('pink-warning-mode');
                 resultWord = "Pink Need ReFresh";
+                triggerCustomPinkSmoke();
             }
-
             badgeContainer.innerText = resultWord;
         }
-
-        loadQuestion();
     </script>
 </body>
 </html>
