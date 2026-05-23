@@ -31,7 +31,6 @@
             transition: background 1s ease, background-image 1s ease;
         }
 
-        /* حاوية الـ Three.js الشاشية للدخان الحقيقي المتموج */
         #threeCanvasContainer {
             position: absolute;
             top: 0; left: 0;
@@ -41,7 +40,6 @@
             opacity: 1;
         }
 
-        /* تأثير التعتيم الخفيف للدخان أثناء عرض الفيديو لزيادة التركيز على الفيديو */
         .dimmed-smoke {
             filter: brightness(0.4) contrast(1.1);
         }
@@ -76,7 +74,6 @@
             background: transparent !important;
         }
 
-        /* كانفاس ومضات النجوم والسباركلز اللامعة الفخمة فوق الدخان */
         #sparkleCanvas {
             position: absolute;
             top: 0; left: 0;
@@ -87,7 +84,6 @@
             transition: opacity 0.8s ease-in-out;
         }
 
-        /* كانفاس تأثير انفجار الجزيئات الورقية البراقة عند الضغط على خيار */
         #particleCanvas {
             position: absolute;
             top: 0; left: 0;
@@ -101,9 +97,9 @@
             z-index: 4;
             background: transparent; 
             border: none;
-            padding: 20px;
-            width: 90%;
-            max-width: 480px;
+            padding: 15px;
+            width: 95%;
+            max-width: 440px;
             box-shadow: none;
             text-align: center;
             transform: scale(1);
@@ -198,12 +194,12 @@
             z-index: 100;
             background: rgba(255, 20, 147, 0.18); 
             border: 1px solid rgba(255, 20, 147, 0.4); 
-            padding: 20px 24px;
+            padding: 18px 22px;
             border-radius: 20px;
             color: #ffffff; 
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             text-align: right;
@@ -243,8 +239,8 @@
         }
 
         h2 {
-            margin-bottom: 40px;
-            font-size: 1.5rem;
+            margin-bottom: 35px;
+            font-size: 1.4rem;
             line-height: 1.6;
             font-weight: 700;
             color: #ffffff;
@@ -260,7 +256,7 @@
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         @keyframes glassSelected {
@@ -284,13 +280,13 @@
             display: none !important;
         }
 
-        /* واجهة النتيجة الزجاجية الفخمة */
+        /* تعديل شاشة النتيجة الزجاجية بالكامل لضغط المساحات عمودياً */
         #result-screen {
             background: rgba(255, 255, 255, 0.2); 
             backdrop-filter: blur(25px); 
             -webkit-backdrop-filter: blur(25px); 
-            border-radius: 40px;
-            padding: 40px 24px;
+            border-radius: 35px;
+            padding: 25px 20px; /* تقليل البادينغ الداخلي للعلبة الزجاجية */
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
@@ -306,10 +302,10 @@
         }
 
         .result-intro {
-            font-size: 1.15rem;
+            font-size: 0.95rem; /* تصغير طفيف لتوفير مساحة */
             font-weight: 700;
             color: #ff66a3; 
-            margin-bottom: 12px;
+            margin-bottom: 6px; /* تقليل الهامش السفلي */
             letter-spacing: 1px;
             text-transform: uppercase;
             animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -321,13 +317,13 @@
         }
 
         .result-badge {
-            font-size: 3.4rem;
+            font-size: 2.6rem; /* تصغير حجم الخط من 3.4rem لتوفير مساحة عمودية هائلة */
             font-weight: 800;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             animation: badgeBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
         }
 
@@ -338,44 +334,44 @@
         }
 
         .result-score {
-            font-size: 1.8rem;
+            font-size: 1.4rem; /* تصغير حجم النسبة المئوية من 1.8rem */
             font-weight: 600;
             color: #ffffff;
-            margin-bottom: 20px;
+            margin-bottom: 12px; /* تقليل الفراغ */
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
         .result-description {
-            font-size: 1.05rem;
+            font-size: 0.95rem; /* تصغير الوصف البرجرافي قليلاً من 1.05rem لتفادي الـ Wrap الزائد */
             font-weight: 500;
             color: #ffffff;
-            line-height: 1.7;
+            line-height: 1.6;
             padding: 0 5px;
-            margin-bottom: 25px;
+            margin-bottom: 18px; /* تقريب المسافة جداً من علبة الكود */
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
             text-align: center;
             animation: fadeInUp 0.6s ease-out 0.45s both;
         }
 
-        /* ستايل علبة الكود الفريد */
+        /* تعديل علبة الكود لتكون ملمومة وضمن النطاق المرئي */
         .premium-code-box {
             background: rgba(255, 255, 255, 0.15);
             border: 2px dashed rgba(255, 102, 163, 0.6);
-            padding: 14px;
-            border-radius: 16px;
+            padding: 10px 14px; /* ضغط داخلي عمودي */
+            border-radius: 14px;
             color: #ffffff;
-            font-size: 1.25rem;
+            font-size: 1.1rem; /* تصغير حجم الخط الخاص بالـ Code */
             font-weight: 700;
             letter-spacing: 1px;
-            margin-bottom: 25px;
+            margin-bottom: 15px; /* تقليل الهامش لجذب زر الواتساب للأعلى */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
-            max-width: 320px;
+            max-width: 300px;
             transition: all 0.3s ease;
             animation: fadeInUp 0.6s ease-out 0.55s both;
         }
@@ -386,30 +382,30 @@
         }
 
         .premium-code-box span.copy-lbl {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             background: #ff66a3;
             color: #fff;
-            padding: 3px 8px;
+            padding: 2px 6px;
             border-radius: 6px;
             font-weight: 500;
         }
 
-        /* ستايل زر الواتساب الفخم والواضح جداً أسفل الكود */
+        /* زر الواتساب الفخم - أصبح مرتفعاً ومحفوظاً داخل الشاشة تماماً */
         .whatsapp-btn {
             background: linear-gradient(135deg, #25D366, #128C7E);
             border: none;
-            padding: 16px 30px;
-            border-radius: 20px;
+            padding: 14px 24px; /* تصغير خفيف للبادينغ ليظهر كاملاً */
+            border-radius: 18px;
             color: #ffffff;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
-            max-width: 320px;
+            max-width: 300px;
             box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
             transition: all 0.3s ease;
             animation: fadeInUp 0.6s ease-out 0.65s both;
@@ -475,11 +471,9 @@
     </div>
 
     <script>
-        // التكوينات البرمجية للعيادة
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKsXNhCGqAD3v5_-XU0tC3ixKjV0GOJEjDxAyk66gNWjbrV7pRMl47PxHD39rlxg4/exec";
         const WHATSAPP_PHONE_NUMBER = "9647777900545";
 
-        // نظام إدارة تأثير انفجار الجزيئات البصري
         const particleSystem = {
             canvas: document.getElementById('particleCanvas'),
             ctx: null,
@@ -541,7 +535,6 @@
         particleSystem.init();
         particleSystem.animate();
 
-        // الصوتيات وضبط تفعيلها على النقال
         const clickSound = new Audio('click.mp3');
         clickSound.volume = 0.5;
 
@@ -564,7 +557,6 @@
             isAudioUnlocked = true;
         }
 
-        // تم تعديل الصياغة بالكامل هنا لتخاطب الذكور وتكون عامة (تدخن، تشرب، تحس) بدلاً من المؤنث
         const quizData = [
             { id: "q1", question: "كم مرة تشرب قهوة او شاي يوميا؟", options: ["ولا مرة", "مرة او مرتان", "من ثلاث الى خمس مرات", "عايش عليها"], scores: [100, 70, 35, 0], image: "bg1.png" },
             { id: "q2", question: "هل تدخن؟", options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"], scores: [100, 70, 35, 0], image: "bg2.png" },
@@ -606,7 +598,6 @@
         const codeTextPlaceholder = document.getElementById('code-text-placeholder');
         const whatsappRedirectBtn = document.getElementById('whatsapp-redirect-btn');
 
-        // --- كود الـ Shader للدخان المتموج ---
         let scene, camera, renderer, smokeMaterial, smokeMesh;
         let clock = new THREE.Clock();
 
@@ -900,7 +891,6 @@
             showResults(resultWord, finalCalculatedScore, finalGeneratedCode);
         }
 
-        // تم تعديل نصوص الأوصاف هنا لتكون بصيغة المذكر العامة (الخاص بك، حضورك، انتعاشك)
         function showResults(resultWord, finalCalculatedScore, code) {
             questionScreen.classList.add('hidden');
             resultScreen.classList.remove('hidden');
@@ -915,23 +905,23 @@
             if (resultWord === "Pink Glow") {
                 document.body.style.backgroundImage = "url('bg1.png')";
                 fullDynamicContent = `
-                    الانتعاش، الثقة والاهتمام واضحين بكل تفاصيل الـ whisper الخاصة بك… ولمسة عناية بسيطة تخلي حضورك ما ينوصف وينذكر دائمًا.<br><br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك في العيادة فوراً ✨
+                    الانتعاش، الثقة والاهتمام واضحين بكل تفاصيل الـ whisper الخاصة بك… ولمسة عناية بسيطة تخلي حضورك ما ينوصف وينذكر دائمًا.<br>
+                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك فوراً ✨
                 `;
                 triggerFastConfetti();
                 
             } else if (resultWord === "Pink Balance") {
                 document.body.style.backgroundImage = "url('bg2.png')";
                 fullDynamicContent = `
-                    أحيانًا التفاصيل الصغيرة بعنايتك اليومية تأثر على انتعاشك وثقتك أكثر مما تتوقع… وكل اللي تحتاجه هو اللمسة الصح للـ whisper الخاصة بك.<br><br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك في العيادة فوراً ✨
+                    أحيانًا التفاصيل الصغيرة بعنايتك اليومية تأثر على انتعاشك وثقتك أكثر مما تتوقع… وكل اللي تحتاجه هو اللمسة الصح للـ whisper الخاصة بك.<br>
+                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك فوراً ✨
                 `;
                 
             } else if (resultWord === "Pink Revival") {
                 document.body.style.backgroundImage = "url('bg3.png')";
                 fullDynamicContent = `
-                    الـ whisper الخاصة بك جاهزة لبداية جديدة ومنعشة… وخطوة وحدة ممكن تطلع كل الـ Pink Glow اللي بداخلك.<br><br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك في العيادة فوراً ✨
+                    الـ whisper الخاصة بك جاهزة لبداية جديدة ومنعشة… وخطوة وحدة ممكن تطلع كل الـ Pink Glow اللي بداخلك.<br>
+                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك فوراً ✨
                 `;
             }
             
