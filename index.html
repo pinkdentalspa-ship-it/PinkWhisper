@@ -295,6 +295,9 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
             animation: fadeInResult 0.8s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         @keyframes fadeInResult {
@@ -355,7 +358,7 @@
             animation: fadeInUp 0.6s ease-out 0.45s both;
         }
 
-        /* ستايل علبة الكود الفريد المضافة للتصميم */
+        /* ستايل علبة الكود الفريد */
         .premium-code-box {
             background: rgba(255, 255, 255, 0.15);
             border: 2px dashed rgba(255, 102, 163, 0.6);
@@ -371,6 +374,8 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
+            width: 100%;
+            max-width: 320px;
             transition: all 0.3s ease;
             animation: fadeInUp 0.6s ease-out 0.55s both;
         }
@@ -389,7 +394,7 @@
             font-weight: 500;
         }
 
-        /* ستايل زر الواتساب المتناسق مع الفخامة الزجاجية */
+        /* ستايل زر الواتساب الفخم والواضح جداً أسفل الكود */
         .whatsapp-btn {
             background: linear-gradient(135deg, #25D366, #128C7E);
             border: none;
@@ -398,13 +403,13 @@
             color: #ffffff;
             font-size: 1.1rem;
             font-weight: 700;
-            cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             width: 100%;
+            max-width: 320px;
             box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
             transition: all 0.3s ease;
             animation: fadeInUp 0.6s ease-out 0.65s both;
@@ -470,7 +475,7 @@
     </div>
 
     <script>
-        // التكوينات البرمجية الجديدة للعيادة
+        // التكوينات البرمجية للعيادة
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKsXNhCGqAD3v5_-XU0tC3ixKjV0GOJEjDxAyk66gNWjbrV7pRMl47PxHD39rlxg4/exec";
         const WHATSAPP_PHONE_NUMBER = "9647777900545";
 
@@ -559,13 +564,14 @@
             isAudioUnlocked = true;
         }
 
+        // تم تعديل الصياغة بالكامل هنا لتخاطب الذكور وتكون عامة (تدخن، تشرب، تحس) بدلاً من المؤنث
         const quizData = [
             { id: "q1", question: "كم مرة تشرب قهوة او شاي يوميا؟", options: ["ولا مرة", "مرة او مرتان", "من ثلاث الى خمس مرات", "عايش عليها"], scores: [100, 70, 35, 0], image: "bg1.png" },
-            { id: "q2", question: "هل تدخنين؟", options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"], scores: [100, 70, 35, 0], image: "bg2.png" },
-            { id: "q3", question: "هل تشربين ماء كافي يوميا؟", options: ["نعم", "أحياناً", "لا"], scores: [100, 50, 0], image: "bg3.png" },
-            { id: "q4", question: "احد عرض عليكِ علكة او نعناع بشكل مفاجئ؟", options: ["لا", "احيانا", "مرات متكررة"], scores: [100, 50, 0], image: "bg4.png" },
-            { id: "q5", question: "تحسين بجفاف بالفم؟", options: ["نادرا", "احيانا", "دائما"], scores: [100, 50, 0], image: "bg5.png" },
-            { id: "q6", question: "تحسين الناس تبتعد و انتِ تحجين؟", options: ["لا", "يمكن", "صارت اكثر من مرة"], scores: [100, 50, 0], image: "bg6.png" }
+            { id: "q2", question: "هل تدخن؟", options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"], scores: [100, 70, 35, 0], image: "bg2.png" },
+            { id: "q3", question: "هل تشرب ماء كافي يوميا؟", options: ["نعم", "أحياناً", "لا"], scores: [100, 50, 0], image: "bg3.png" },
+            { id: "q4", question: "احد عرض عليك علكة او نعناع بشكل مفاجئ؟", options: ["لا", "احيانا", "مرات متكررة"], scores: [100, 50, 0], image: "bg4.png" },
+            { id: "q5", question: "تحس بجفاف بالفم؟", options: ["نادرا", "احيانا", "دائما"], scores: [100, 50, 0], image: "bg5.png" },
+            { id: "q6", question: "تحس الناس تبتعد و انت تحجي؟", options: ["لا", "يمكن", "صارت اكثر من مرة"], scores: [100, 50, 0], image: "bg6.png" }
         ];
 
         function preloadImages() {
@@ -577,7 +583,7 @@
         let totalScore = 0;
         let sparkleAnimationId = null; 
         let isAnswering = false; 
-        let userResponsesPayload = {}; // مصفوفة لحفظ نصوص الإجابات الفعلية
+        let userResponsesPayload = {}; 
         let finalGeneratedCode = "";
 
         const quizBox = document.getElementById('quiz-box');
@@ -810,8 +816,6 @@
             particleSystem.burstParticles(burstX, burstY, 35);
 
             totalScore += currentData.scores[selectedIndex];
-            
-            // حفظ النص المحدد لإرساله سحابياً لاحقاً
             userResponsesPayload[currentData.id] = currentData.options[selectedIndex];
             
             clickSound.currentTime = 0;
@@ -851,7 +855,6 @@
             }());
         }
 
-        // دالة جديدة لتوليد الكود، شحن البيانات للـ Google Sheet، وثم عرض شاشة النتائج
         function shipDataAndShowResults() {
             let finalCalculatedScore = (totalScore / 6).toFixed(1);
             let resultWord = "";
@@ -864,7 +867,6 @@
                 resultWord = "Pink Revival";
             }
 
-            // توليد كود الحالة الملكي الفريد بناءً على تاريخ اليوم الفعلي
             const now = new Date();
             const day = String(now.getDate()).padStart(2, '0');
             const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -872,7 +874,6 @@
             const randomQuad = Math.floor(1000 + Math.random() * 9000);
             finalGeneratedCode = `PW-${day}${month}${year}-${randomQuad}`;
 
-            // تجهيز حمولة البيانات لإرسالها بالخلفية
             const sheetPayload = {
                 code: finalGeneratedCode,
                 result: resultWord,
@@ -885,22 +886,21 @@
                 q6: userResponsesPayload["q6"]
             };
 
-            // إرسال حزمة البيانات سحابياً للجوجل شيت فوراً بالخلفية
             fetch(GOOGLE_SCRIPT_URL, {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(sheetPayload)
             }).then(() => {
-                console.log("Data packet synced smoothly with Google Hub.");
+                console.log("Data synced seamlessly.");
             }).catch(err => {
-                console.error("Network sync omitted, running gracefully:", err);
+                console.error("Network sync omitted:", err);
             });
 
-            // الانتقال الفوري لعرض النتائج الفخمة للعميل
             showResults(resultWord, finalCalculatedScore, finalGeneratedCode);
         }
 
+        // تم تعديل نصوص الأوصاف هنا لتكون بصيغة المذكر العامة (الخاص بك، حضورك، انتعاشك)
         function showResults(resultWord, finalCalculatedScore, code) {
             questionScreen.classList.add('hidden');
             resultScreen.classList.remove('hidden');
@@ -915,23 +915,23 @@
             if (resultWord === "Pink Glow") {
                 document.body.style.backgroundImage = "url('bg1.png')";
                 fullDynamicContent = `
-                    الانتعاش، الثقة و الاهتمام واضحين بكل تفاصيل الـ whisper الخاصة بيك… و لمسة عناية بسيطة تخلي حضورك ما ينوصف وينذكر دائمًا.<br><br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستكِ الملكية في العيادة فوراً ✨
+                    الانتعاش، الثقة والاهتمام واضحين بكل تفاصيل الـ whisper الخاصة بك… ولمسة عناية بسيطة تخلي حضورك ما ينوصف وينذكر دائمًا.<br><br>
+                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك في العيادة فوراً ✨
                 `;
                 triggerFastConfetti();
                 
             } else if (resultWord === "Pink Balance") {
                 document.body.style.backgroundImage = "url('bg2.png')";
                 fullDynamicContent = `
-                    أحيانًا التفاصيل الصغيرة بعنايتك اليومية تأثر على انتعاشك و ثقتك أكثر مما تتوقع… وكل اللي تحتاجه هو اللمسة الصح للـ whisper الخاصة بيك.<br><br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستكِ الملكية في العيادة فوراً ✨
+                    أحيانًا التفاصيل الصغيرة بعنايتك اليومية تأثر على انتعاشك وثقتك أكثر مما تتوقع… وكل اللي تحتاجه هو اللمسة الصح للـ whisper الخاصة بك.<br><br>
+                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك في العيادة فوراً ✨
                 `;
                 
             } else if (resultWord === "Pink Revival") {
                 document.body.style.backgroundImage = "url('bg3.png')";
                 fullDynamicContent = `
-                    الـ whisper الخاصة بيك جاهزة لبداية جديدة و منعشة… و خطوة وحدة ممكن تطلع كل الـ Pink Glow اللي بداخلك.<br><br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستكِ الملكية في العيادة فوراً ✨
+                    الـ whisper الخاصة بك جاهزة لبداية جديدة ومنعشة… وخطوة وحدة ممكن تطلع كل الـ Pink Glow اللي بداخلك.<br><br>
+                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك في العيادة فوراً ✨
                 `;
             }
             
@@ -939,17 +939,15 @@
             scoreContainer.innerText = `${finalCalculatedScore}%`;
             descriptionContainer.innerHTML = fullDynamicContent;
             
-            // حقن الكود وتعديل رابط زر الواتساب الجديد ديناميكياً ليحمل رسالة الكود فقط بنظافة
             codeTextPlaceholder.innerText = code;
             const encodedText = encodeURIComponent(`الكود الخاص بي هو: ${code}`);
             whatsappRedirectBtn.href = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodedText}`;
         }
 
-        // دالة نسخ الكود المريحة عند ضغط علبة الكود
         function copyCodeToClipboard() {
             if(!finalGeneratedCode) return;
             navigator.clipboard.writeText(finalGeneratedCode).then(() => {
-                alert("تم نسخ كود الحالة الخاص بكِ بنجاح: " + finalGeneratedCode);
+                alert("تم نسخ كود الحالة الخاص بك بنجاح: " + finalGeneratedCode);
             }).catch(err => {
                 console.error("Failed to copy text: ", err);
             });
