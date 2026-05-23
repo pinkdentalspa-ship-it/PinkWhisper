@@ -3,837 +3,601 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pink Dental Spa - Enter the PINK world</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>Pink Whisper Test | Pink Dental Spa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --pink-primary: #ff66a1;
+            --pink-dark: #d43f7a;
+            --pink-light: #ffe3ee;
+            --pink-soft: #fff0f5;
+            --text-dark: #2c2c2c;
+            --text-muted: #6c757d;
+            --white: #ffffff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: var(--pink-soft);
+            color: var(--text-dark);
+            overflow-x: hidden;
             min-height: 100vh;
+        }
+
+        .page-container {
             position: relative;
-            background-color: #1a0511; 
+            min-height: 100vh;
+            width: 100%;
+            transition: background 0.5s ease-in-out;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            overflow: hidden;
-            transition: background 1s ease, background-image 1s ease;
         }
 
-        /* حاوية الـ Three.js الشاشية للدخان الحقيقي المتموج */
-        #threeCanvasContainer {
+        .video-background {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             z-index: 1;
-            transition: opacity 1.2s ease-in-out, filter 1.2s ease-in-out;
-            opacity: 1;
-        }
-
-        /* تأثير التعتيم الخفيف للدخان أثناء عرض الفيديو لزيادة التركيز على الفيديو */
-        .dimmed-smoke {
-            filter: brightness(0.4) contrast(1.1);
-        }
-
-        .bg-slider {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: 0;
-            opacity: 0; 
-            filter: blur(0px);
-            transform: scale(1);
-            transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
-        }
-
-        .bg-blur-effect {
-            filter: blur(4px);
-            transform: scale(1.03);
         }
 
         .overlay {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.02); 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 240, 245, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 2;
-            transition: background 1s ease;
+            transition: background 0.5s ease;
         }
 
-        .welcome-overlay {
-            background: transparent !important;
-        }
-
-        /* كانفاس ومضات النجوم والسباركلز اللامعة الفخمة فوق الدخان */
-        #sparkleCanvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 3; 
-            pointer-events: none; 
-            opacity: 1;
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        /* كانفاس تأثير انفجار الجزيئات الورقية البراقة عند الضغط على خيار */
-        #particleCanvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .quiz-container {
+        .app-wrapper {
             position: relative;
-            z-index: 4;
-            background: transparent; 
-            border: none;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
             padding: 20px;
-            width: 90%;
-            max-width: 480px;
-            box-shadow: none;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 24px;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(212, 63, 122, 0.15);
+            border: 2px solid rgba(255, 102, 161, 0.2);
             text-align: center;
-            transform: scale(1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(30px);
+            display: none;
+        }
+
+        .card.active {
+            display: block;
             opacity: 1;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-in-out;
+            transform: translateY(0);
         }
 
-        .card-box {
-            background: #ffffff;
-            border-radius: 32px;
-            padding: 40px 30px;
-            box-shadow: 0 25px 60px rgba(180, 20, 100, 0.12);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
+        h1 {
+            color: var(--pink-dark);
+            font-weight: 900;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
         }
 
-        .welcome-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .welcome-video {
-            width: 100%;
-            max-width: 380px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-            outline: none;
-            background-color: #000;
-            object-fit: cover;
-            margin-bottom: 35px;
-        }
-
-        .main-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 2.4rem;
-            color: #2b353c;
-            font-weight: 600;
-            line-height: 1.25;
-            margin-bottom: 25px;
-            text-shadow: none;
-            direction: ltr;
-        }
-
-        .sub-title {
+        p.description {
+            color: var(--text-dark);
             font-size: 1.05rem;
-            color: #9aa4ac;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            font-weight: 500;
-            max-width: 90%;
-            direction: ltr;
+            line-height: 1.7;
+            margin-bottom: 25px;
         }
 
-        .start-btn {
-            background: linear-gradient(to left, #ff00cc, #ffc0cb);
+        .video-presenter-container {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 3px solid var(--pink-primary);
+            background: #000;
+            position: relative;
+            padding-bottom: 133.33%;
+            height: 0;
+        }
+
+        .video-presenter-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--pink-primary), var(--pink-dark));
+            color: var(--white);
             border: none;
-            padding: 16px 45px;
-            border-radius: 20px;
-            color: #ffffff; 
-            font-size: 1.15rem;
-            font-weight: 600;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(214, 63, 122, 0.3);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(255, 0, 204, 0.25);
-            direction: ltr;
-            width: 90%;
-            max-width: 290px;
-        }
-
-        .start-btn .heart-icon {
-            font-size: 1.1rem;
-            display: inline-block;
-            line-height: 1;
-        }
-
-        .start-btn:hover, .start-btn:active {
-            transform: scale(1.03);
-            box-shadow: 0 12px 30px rgba(255, 0, 204, 0.35);
-            opacity: 0.95;
-        }
-
-        /* تصميم أزرار الخيارات مع تأثير انميشن الدخول الجانبي اللطيف */
-        .option-btn {
-            position: relative;
-            z-index: 100;
-            background: rgba(255, 20, 147, 0.18); 
-            border: 1px solid rgba(255, 20, 147, 0.4); 
-            padding: 20px 24px;
-            border-radius: 20px;
-            color: #ffffff; 
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            text-align: right;
+            gap: 10px;
             width: 100%;
-            outline: none;
-            overflow: hidden;
-            
-            /* انميشن الدخول الانسيابي المتتابع للأزرار */
-            animation: buttonSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            margin-top: 10px;
         }
 
-        /* فروقات زمنية بسيطة جداً لظهور الأزرار بالتتابع الجذاب */
-        .option-btn:nth-child(1) { animation-delay: 0s; }
-        .option-btn:nth-child(2) { animation-delay: 0.08s; }
-        .option-btn:nth-child(3) { animation-delay: 0.16s; }
-        .option-btn:nth-child(4) { animation-delay: 0.24s; }
-
-        @keyframes buttonSlideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(214, 63, 122, 0.4);
         }
 
-        .option-btn:hover, .option-btn:active {
-            background: rgba(255, 20, 147, 0.45); 
-            border-color: rgba(255, 20, 147, 0.8);
-            color: #ffffff;
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.25);
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
         }
 
-        .quiz-pull-out {
-            transform: scale(0.92);
-            opacity: 0;
-        }
-
-        .quiz-pull-in-prepare {
-            transform: scale(1.08);
-            opacity: 0;
-            transition: none;
-        }
-
-        h2 {
-            margin-bottom: 40px;
-            font-size: 1.5rem;
-            line-height: 1.6;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
-            
-            /* انميشن نزول ناعم لعنوان السؤال */
-            animation: fadeInDown 0.5s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-whatsapp:hover {
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
         }
 
         .options-list {
+            list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
+            margin: 25px 0;
         }
 
-        @keyframes glassSelected {
-            0% { background: rgba(255, 20, 147, 0.45); color: #ffffff;}
-            50% { transform: scale(1.06); }
-            100% { background: #ff1493; border-color: #ff1493; color: #ffffff; text-shadow: none; transform: scale(1.04); box-shadow: 0 10px 25px rgba(255, 20, 147, 0.35), 0 0 30px rgba(255, 20, 147, 0.5);}
+        .option-item {
+            background: var(--white);
+            border: 2px solid rgba(255, 102, 161, 0.15);
+            padding: 14px 20px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .btn-selected {
-            animation: glassSelected 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            pointer-events: none;
+        .option-item:hover {
+            background: var(--pink-light);
+            border-color: var(--pink-primary);
+            color: var(--pink-dark);
+            transform: translateX(-5px);
         }
 
-        .disabled {
-            pointer-events: none;
-            opacity: 0.15;
-            transform: scale(0.96);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* واجهة النتيجة الزجاجية الفخمة */
-        #result-screen {
-            background: rgba(255, 255, 255, 0.25); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px); 
-            border-radius: 40px;
-            padding: 50px 24px;
-            width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            animation: fadeInResult 0.8s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
-        }
-
-        @keyframes fadeInResult {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-intro {
-            font-size: 1.15rem;
+        .option-item.selected {
+            background: linear-gradient(135deg, var(--pink-light), rgba(255, 102, 161, 0.3));
+            border-color: var(--pink-dark);
+            color: var(--pink-dark);
             font-weight: 700;
-            color: #ff66a3; 
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
 
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.4); }
-            to { opacity: 1; transform: scale(1); }
+        .option-item::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--pink-primary);
+            display: inline-block;
+            order: 2;
+            transition: all 0.2s ease;
+        }
+
+        .option-item.selected::before {
+            background-color: var(--pink-dark);
+            border-color: var(--pink-dark);
+            transform: scale(1.2);
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin-top: 25px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pink-primary), var(--pink-dark));
+            width: 0%;
+            transition: width 0.4s ease;
         }
 
         .result-badge {
-            font-size: 3.6rem;
-            font-weight: 800;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            margin-bottom: 8px;
-            animation: badgeBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
-        }
-
-        @keyframes badgeBounce {
-            0% { opacity: 0; transform: scale(0.4); }
-            70% { transform: scale(1.04); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .result-score {
-            font-size: 1.9rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            animation: fadeInUp 0.6s ease-out 0.3s both;
-        }
-
-        /* تعديل تصميم الوصف ليناسب النص العربي المنسق بسلاسة */
-        .result-description {
+            background: var(--pink-light);
+            color: var(--pink-dark);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
             font-size: 1.1rem;
-            font-weight: 500;
-            color: #ffffff;
-            line-height: 1.7;
-            padding: 0 5px;
-            margin-bottom: 20px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            animation: fadeInUp 0.6s ease-out 0.45s both;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 1px solid rgba(214, 63, 122, 0.2);
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        .code-box {
+            background: #f8f9fa;
+            border: 2px dashed var(--pink-primary);
+            padding: 15px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--pink-dark);
+            letter-spacing: 1px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .code-box span {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.85rem;
+            background: var(--pink-primary);
+            color: var(--white);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--pink-light);
+            border-top: 5px solid var(--pink-dark);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
     </style>
 </head>
 <body>
 
-    <div id="threeCanvasContainer"></div>
+    <div class="page-container" id="pageContainer">
+        <video class="video-background" autoplay muted loop playsinline id="bgVideo">
+            <source src="bg-loop.mp4" type="video/mp4">
+        </video>
+        <div class="overlay" id="bgOverlay"></div>
 
-    <div class="bg-slider" id="bg-layer"></div>
-    <div class="overlay welcome-overlay" id="overlay-layer"></div>
+        <div class="app-wrapper">
 
-    <canvas id="sparkleCanvas"></canvas>
-    
-    <canvas id="particleCanvas"></canvas>
+            <div class="card active" id="screen-welcome">
+                <h1>مرحباً بكِ في تجربة <br><span style="color: var(--pink-primary);">Pink Whisper</span> الفريدة</h1>
+                <p class="description">اكتشفي سر انتعاش وجاذبية ابتسامتكِ وصحة فمكِ من خلال اختبار فخامة الـ Pink Dental Spa المخصص لكِ بكل دقة.</p>
+                
+                <div class="video-presenter-container">
+                    <video id="presenterVideo" preload="auto" playsinline>
+                        <source src="introVideo.mp4" type="video/mp4">
+                    </video>
+                </div>
 
-    <div class="quiz-container" id="quiz-box">
-        
-        <div id="welcome-screen" class="welcome-screen">
-            <div class="card-box">
-                <video class="welcome-video" id="introVideo" playsinline>
-                    <source src="intro.mp4" type="video/mp4">
-                    متصفحك لا يدعم تشغيل الفيديو.
-                </video>
-                <div class="main-title">Enter the PINK<br>world</div>
-                <div class="sub-title">Not everything needs to be said loud...Some things are only Whispered</div>
-                <button class="start-btn" id="start-quiz-btn">
-                    <span>Pink Whisper</span>
-                    <span class="heart-icon">🤍</span>
+                <button class="btn" id="start-btn">
+                    ابدئي التجربة الآن
                 </button>
             </div>
-        </div>
 
-        <div id="question-screen" class="hidden">
-            <h2 id="question-text">جاري تحضير تجربة الـ Spa...</h2>
-            <div class="options-list" id="options-container"></div>
-        </div>
+            <div class="card" id="screen-question">
+                <h1 id="question-text">السؤال</h1>
+                <p class="description" id="question-desc">توضيح إضافي...</p>
+                
+                <ul class="options-list" id="options-container"></ul>
 
-        <div id="result-screen" class="hidden">
-            <div class="result-intro">Your Whisper Result</div>
-            <div id="badge-container" class="result-badge"></div>
-            <div id="score-container" class="result-score"></div>
-            <div id="description-container" class="result-description"></div>
+                <button class="btn" id="next-btn" disabled>السؤال التالي</button>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="card" id="screen-loading">
+                <h1>جاري تحليل إجاباتكِ بدقة...</h1>
+                <p class="description">يقوم نظام الـ Pink Spa الذكي الآن بحساب النتيجة وتجهيز التقرير الملكي المخصص لكِ.</p>
+                <div class="spinner"></div>
+            </div>
+
+            <div class="card" id="screen-result">
+                <h1>اكتمل التحليل الفخم! ✨</h1>
+                <p class="description" style="margin-bottom: 15px;">بناءً على إجاباتكِ، تم تحديد بصمة انتعاشكِ وهي:</p>
+                
+                <div class="result-badge" id="result-display">Pink Glow</div>
+                
+                <p class="description" style="font-size: 0.95rem; margin-bottom: 10px;">انسخي كود الحالة الخاص بكِ في الأسفل لتأكيده والحصول على التقرير التفصيلي وحجز جلستكِ المخصصة عبر الواتساب:</p>
+                
+                <div class="code-box" id="code-box" onclick="copyCodeToClipboard()">
+                    <span id="final-code">PW-XXXXXX-XXXX</span>
+                    <span>اضغطي للنسخ</span>
+                </div>
+
+                <p class="description" style="font-size: 0.9rem; color: var(--pink-dark); font-weight: bold;">اضغطي على الزر الأخضر بالأسفل لإرسال الكود مباشرة للعيادة وتفعيل الحجز:</p>
+
+                <a href="#" target="_blank" class="btn btn-whatsapp" id="whatsapp-link">
+                    إرسال الكود وتفعيل الجلسة عبر WhatsApp
+                </a>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // --- نظام إدارة تأثير انفجار الجزيئات البصري الفخم والمباشر ---
-        const particleSystem = {
-            canvas: document.getElementById('particleCanvas'),
-            ctx: null,
-            particles: [],
-            
-            init() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-                this.ctx = this.canvas.getContext('2d');
-                window.addEventListener('resize', () => {
-                    this.canvas.width = window.innerWidth;
-                    this.canvas.height = window.innerHeight;
-                });
-            },
-            
-            burstParticles(x, y, count = 30) {
-                for (let i = 0; i < count; i++) {
-                    const angle = (Math.PI * 2 * i) / count;
-                    const velocity = 3 + Math.random() * 3;
-                    this.particles.push({
-                        x, y,
-                        vx: Math.cos(angle) * velocity,
-                        vy: Math.sin(angle) * velocity,
-                        life: 1,
-                        size: 3 + Math.random() * 3,
-                        color: `hsl(${320 + Math.random() * 40}, 100%, ${60 + Math.random() * 20}%)`
-                    });
-                }
-            },
-            
-            update() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                for (let i = this.particles.length - 1; i >= 0; i--) {
-                    const p = this.particles[i];
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.15; 
-                    p.life -= 0.02;
-                    if (p.life <= 0) {
-                        this.particles.splice(i, 1);
-                        continue;
-                    }
-                    this.ctx.save();
-                    this.ctx.globalAlpha = p.life;
-                    this.ctx.fillStyle = p.color;
-                    this.ctx.shadowBlur = 8;
-                    this.ctx.shadowColor = p.color;
-                    this.ctx.beginPath();
-                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    this.ctx.fill();
-                    this.ctx.restore();
-                }
-            },
-            animate() {
-                this.update();
-                requestAnimationFrame(() => this.animate());
-            }
-        };
-        particleSystem.init();
-        particleSystem.animate();
+        // تكوين الثوابت بروابطك وهاتفك الجديد
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKsXNhCGqAD3v5_-XU0tC3ixKjV0GOJEjDxAyk66gNWjbrV7pRMl47PxHD39rlxg4/exec";
+        const WHATSAPP_PHONE_NUMBER = "9647777900545";
 
-        // الصوتيات وضبط تفعيلها على النقال
-        const clickSound = new Audio('click.mp3');
-        clickSound.volume = 0.5;
-
-        const welcomeSound = new Audio('welcome.mp3');
-        welcomeSound.volume = 0.7; 
-
-        let isAudioUnlocked = false;
-
-        function unlockMobileAudio() {
-            if (isAudioUnlocked) return;
-            [clickSound, welcomeSound].forEach(sound => {
-                const playPromise = sound.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        sound.pause();
-                        sound.currentTime = 0;
-                    }).catch(err => {});
-                }
-            });
-            isAudioUnlocked = true;
-        }
-
-        const quizData = [
-            { question: "كم مرة تشرب قهوة او شاي يوميا؟", options: ["ولا مرة", "مرة او مرتان", "من ثلاث الى خمس مرات", "عايش عليها"], scores: [100, 70, 35, 0], image: "bg1.png" },
-            { question: "هل تدخن؟", options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"], scores: [100, 70, 35, 0], image: "bg2.png" },
-            { question: "هل تشرب ماء كافي يوميا؟", options: ["نعم", "أحياناً", "لا"], scores: [100, 50, 0], image: "bg3.png" },
-            { question: "احد عرض عليك علكة او نعناع بشكل مفاجئ؟", options: ["لا", "احيانا", "مرات متكررة"], scores: [100, 50, 0], image: "bg4.png" },
-            { question: "تحس بجفاف بالفم؟", options: ["نادرا", "احيانا", "دائما"], scores: [100, 50, 0], image: "bg5.png" },
-            { question: "تحس الناس تبتعد و انت تحجي؟", options: ["لا", "يمكن", "صارت اكثر من مرة"], scores: [100, 50, 0], image: "bg6.png" }
+        const stepThemes = [
+            { bg: "#fff0f5", overlay: "rgba(255, 240, 245, 0.75)" },
+            { bg: "#ffebee", overlay: "rgba(255, 235, 238, 0.8)" },
+            { bg: "#fce4ec", overlay: "rgba(252, 228, 236, 0.8)" },
+            { bg: "#f3e5f5", overlay: "rgba(243, 229, 245, 0.8)" },
+            { bg: "#efebe9", overlay: "rgba(239, 235, 233, 0.8)" },
+            { bg: "#e8eaf6", overlay: "rgba(232, 234, 246, 0.8)" },
+            { bg: "#e0f2f1", overlay: "rgba(224, 242, 241, 0.8)" },
+            { bg: "#fff0f5", overlay: "rgba(255, 240, 245, 0.7)" }
         ];
 
-        function preloadImages() {
-            quizData.forEach(data => { const img = new Image(); img.src = data.image; });
-        }
-        preloadImages();
+        const questions = [
+            {
+                id: "q1",
+                text: "كم مرة تشربين القهوة، الشاي، أو المشروبات الغازية يومياً؟",
+                desc: "تساعدنا هذه المعرفة في تحديد مدى تعرض طبقة المينا للتصبغات والخصائص الحمضية.",
+                options: [
+                    { text: "نادرًا جدًا أو لا أشربها", score: 0 },
+                    { text: "مرة إلى مرتين يومياً", score: 1 },
+                    { text: "3 مرات أو أكثر يومياً", score: 3 }
+                ]
+            },
+            {
+                id: "q2",
+                text: "هل تدخنين؟ (سجائر أو أرجيلة)",
+                desc: "التدخين يؤثر بشكل مباشر على حيوية وتدفق الأكسجين داخل الأنسجة اللثوية وصحة الأنفاس.",
+                options: [
+                    { text: "لا، أبداً", score: 0 },
+                    { text: "نعم، بشكل خفيف أو متقطع", score: 2 },
+                    { text: "نعم، بشكل يومي ومستمر", score: 4 }
+                ]
+            },
+            {
+                id: "q3",
+                text: "ما هو معدل شربكِ للماء يومياً؟",
+                desc: "الماء هو المحفز الطبيعي الأول لإفراز اللعاب الواقي الذي يحارب بكتيريا الفم.",
+                options: [
+                    { text: "أشرب كميات كبيرة (أكثر من لترين)", score: 0 },
+                    { text: "أشرب كمية متوسطة (حوالي لتر)", score: 1 },
+                    { text: "قليل جداً / أنسى شرب الماء", score: 3 }
+                ]
+            },
+            {
+                id: "q4",
+                text: "هل سبق وأن عرض عليكِ أحد علكة أو نعناع بشكل مفاجئ؟",
+                desc: "سؤال ذكي يعطي مؤشراً غير مباشر عن مدى ثقتكِ بنقاء ونعومة أنفاسكِ أمام الآخرين.",
+                options: [
+                    { text: "لا، لم يحدث ذلك إطلاقاً", score: 0 },
+                    { text: "نادرًا ما يحدث", score: 1 },
+                    { text: "نعم، تكرر هذا الموقف معي", score: 3 }
+                ]
+            },
+            {
+                id: "q5",
+                text: "هل تشعرين أحياناً بجفاف في فمكِ أو لزوجة عند الاستيقاظ؟",
+                desc: "بيئة الفم الجافة تعتبر بيئة خصبة جداً لتكاثر البكتيريا المسببة للروائح غير المرغوبة.",
+                options: [
+                    { text: "لا، فمي رطب دائماً", score: 0 },
+                    { text: "أحياناً عند العطش الشديد", score: 2 },
+                    { text: "نعم، بشكل مستمر ومزعج جداً", score: 4 }
+                ]
+            },
+            {
+                id: "q6",
+                text: "هل تشعرين أحياناً بأن المقربين منكِ يفضلون ترك مسافة أثناء الحديث؟",
+                desc: "مؤشر اجتماعي دقيق جداً نأخذه بعين الاعتبار لتقييم قوة وثبات انتعاش الأنفاس.",
+                options: [
+                    { text: "لا، أبداً، ثقتي كاملة", score: 0 },
+                    { text: "نادرًا أو ينتابني الشك أحياناً", score: 2 },
+                    { text: "نعم، لاحظت هذا التصرف بوضوح", score: 4 }
+                ]
+            }
+        ];
 
         let currentQuestionIndex = 0;
+        let userResponses = {};
         let totalScore = 0;
-        let sparkleAnimationId = null; 
-        let isAnswering = false; 
+        let generatedCode = "";
 
-        const quizBox = document.getElementById('quiz-box');
-        const bgLayer = document.getElementById('bg-layer');
-        const overlayLayer = document.getElementById('overlay-layer');
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
+        const welcomeScreen = document.getElementById("screen-welcome");
+        const questionScreen = document.getElementById("screen-question");
+        const loadingScreen = document.getElementById("screen-loading");
+        const resultScreen = document.getElementById("screen-result");
         
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const questionScreen = document.getElementById('question-screen');
-        const resultScreen = document.getElementById('result-screen');
-        const badgeContainer = document.getElementById('badge-container');
-        const scoreContainer = document.getElementById('score-container');
-        const descriptionContainer = document.getElementById('description-container');
-        const sparkleCanvas = document.getElementById('sparkleCanvas');
-        const startQuizBtn = document.getElementById('start-quiz-btn');
-        const introVideo = document.getElementById('introVideo');
-        const threeContainer = document.getElementById('threeCanvasContainer');
+        const presenterVideo = document.getElementById("presenterVideo");
+        const pageContainer = document.getElementById("pageContainer");
+        const bgOverlay = document.getElementById("bgOverlay");
+        
+        const questionText = document.getElementById("question-text");
+        const questionDesc = document.getElementById("question-desc");
+        const optionsContainer = document.getElementById("options-container");
+        const nextBtn = document.getElementById("next-btn");
+        const progressBar = document.getElementById("progress-bar");
+        
+        const resultDisplay = document.getElementById("result-display");
+        const finalCodeDisplay = document.getElementById("final-code");
+        const whatsappLink = document.getElementById("whatsapp-link");
 
-        // --- كود الـ Shader المتطور للدخان المتموج من صورتك الأصلية ---
-        let scene, camera, renderer, smokeMaterial, smokeMesh;
-        let clock = new THREE.Clock();
-
-        const vertexShaderCode = `
-            varying vec2 vUv;
-            void main() {
-                vUv = uv;
-                gl_Position = vec4(position, 1.0);
-            }
-        `;
-
-        const fragmentShaderCode = `
-            uniform vec2 u_resolution;
-            uniform float u_time;
-            uniform sampler2D u_texture;
-            varying vec2 vUv;
-
-            vec2 distort(vec2 p, float t) {
-                p.x += sin(p.y * 4.0 + t * 0.4) * 0.04;
-                p.y += cos(p.x * 3.5 + t * 0.3) * 0.03;
-                return p;
-            }
-
-            void main() {
-                vec2 st = gl_FragCoord.xy / u_resolution.xy;
-                vec2 uv1 = distort(st, u_time);
-                vec2 uv2 = distort(st, u_time * -0.7 + 5.0);
-                vec4 texColor1 = texture2D(u_texture, uv1);
-                vec4 texColor2 = texture2D(u_texture, uv2);
-                vec4 finalSmoke = mix(texColor1, texColor2, 0.45);
-                gl_FragColor = vec4(finalSmoke.rgb, finalSmoke.a * 0.98);
-            }
-        `;
-
-        function initThreeSmoke() {
-            scene = new THREE.Scene();
-            camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-            
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            threeContainer.appendChild(renderer.domElement);
-
-            const textureLoader = new THREE.TextureLoader();
-            const smokeTexture = textureLoader.load('1000455138.jpg', () => {
-                smokeTexture.wrapS = THREE.RepeatWrapping;
-                smokeTexture.wrapT = THREE.RepeatWrapping;
-            });
-
-            let uniforms = {
-                u_time: { value: 1.0 },
-                u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-                u_texture: { value: smokeTexture }
-            };
-
-            smokeMaterial = new THREE.ShaderMaterial({
-                vertexShader: vertexShaderCode,
-                fragmentShader: fragmentShaderCode,
-                uniforms: uniforms,
-                transparent: true
-            });
-
-            const geometry = new THREE.PlaneGeometry(2, 2);
-            smokeMesh = new THREE.Mesh(geometry, smokeMaterial);
-            scene.add(smokeMesh);
-
-            animateThreeSmoke();
+        function changeTheme(stepIndex) {
+            const theme = stepThemes[stepIndex] || stepThemes[0];
+            pageContainer.style.backgroundColor = theme.bg;
+            bgOverlay.style.backgroundColor = theme.overlay;
         }
 
-        function animateThreeSmoke() {
-            requestAnimationFrame(animateThreeSmoke);
-            if(smokeMaterial) {
-                smokeMaterial.uniforms.u_time.value = clock.getElapsedTime();
-            }
-            renderer.render(scene, camera);
-        }
-
-        window.addEventListener('resize', () => {
-            if(renderer && smokeMaterial) {
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                smokeMaterial.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
-            }
-            sparkleCanvas.width = window.innerWidth;
-            sparkleCanvas.height = window.innerHeight;
+        document.getElementById("start-btn").addEventListener("click", () => {
+            presenterVideo.pause();
+            welcomeScreen.classList.remove("active");
+            setTimeout(() => {
+                welcomeScreen.style.display = "none";
+                questionScreen.style.display = "block";
+                setTimeout(() => questionScreen.classList.add("active"), 50);
+                loadQuestion(0);
+            }, 400);
         });
 
-        initThreeSmoke();
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const currentQuestion = questions[index];
+            changeTheme(index + 1);
 
-        // تشغيل ومضات النجوم المستقلة فوق الدخان
-        function initSparkles() {
-            sparkleCanvas.width = window.innerWidth;
-            sparkleCanvas.height = window.innerHeight;
-            const ctx = sparkleCanvas.getContext('2d');
-            const particles = [];
+            questionText.textContent = currentQuestion.text;
+            questionDesc.textContent = currentQuestion.desc;
+            optionsContainer.innerHTML = "";
+            nextBtn.disabled = true;
 
-            class SparkleParticle {
-                constructor() {
-                    this.x = Math.random() * sparkleCanvas.width;
-                    this.y = Math.random() * sparkleCanvas.height;
-                    this.size = Math.random() * 2.5 + 1;
-                    this.speedX = Math.random() * 0.1 - 0.05;
-                    this.speedY = -(Math.random() * 0.15 + 0.05); 
-                    this.opacity = Math.random() * 0.6 + 0.3;
-                    this.phase = Math.random() * 100;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    if (this.y < -20) {
-                        this.y = sparkleCanvas.height + 20;
-                        this.x = Math.random() * sparkleCanvas.width;
-                    }
-                }
-                draw() {
-                    ctx.save();
-                    ctx.translate(this.x, this.y);
-                    let pulseOpacity = this.opacity * (0.4 + Math.sin(Date.now() * 0.003 + this.phase) * 0.6);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${pulseOpacity})`;
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = "#ffffff";
-                    ctx.beginPath();
-                    for (let i = 0; i < 4; i++) {
-                        ctx.rotate(Math.PI / 2);
-                        ctx.lineTo(0, this.size * 4.5);
-                        ctx.lineTo(this.size * 0.9, 0);
-                    }
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
-
-            for(let i=0; i<25; i++) particles.push(new SparkleParticle());
-
-            function loop() {
-                ctx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
-                sparkleAnimationId = requestAnimationFrame(loop);
-            }
-            loop();
-        }
-        initSparkles();
-
-        startQuizBtn.addEventListener('click', () => {
-            unlockMobileAudio();
-            
-            threeContainer.classList.add('dimmed-smoke');
-            sparkleCanvas.style.opacity = "0.6"; 
-
-            introVideo.muted = false;
-            introVideo.currentTime = 0;
-            introVideo.play().catch(e => {});
-
-            setTimeout(() => {
-                quizBox.classList.add('quiz-pull-out');
-            }, 2500); 
-        });
-
-        introVideo.addEventListener('ended', () => {
-            welcomeScreen.classList.add('hidden');
-            questionScreen.classList.remove('hidden');
-            overlayLayer.classList.remove('welcome-overlay');
-            
-            threeContainer.classList.add('hidden'); 
-            sparkleCanvas.classList.add('hidden');
-            bgLayer.style.opacity = "1";
-
-            quizBox.classList.remove('quiz-pull-out');
-            quizBox.classList.add('quiz-pull-in-prepare');
-            
-            welcomeSound.currentTime = 0;
-            welcomeSound.play().catch(err => {});
-
-            setTimeout(() => {
-                quizBox.style.transition = '';
-                loadQuestion();
-            }, 50);
-        });
-
-        function loadQuestion() {
-            const currentData = quizData[currentQuestionIndex];
-            quizBox.classList.remove('quiz-pull-out', 'quiz-pull-in-prepare');
-            bgLayer.classList.remove('bg-blur-effect');
-            
-            bgLayer.style.backgroundImage = `url('${currentData.image}')`;
-            questionText.innerText = currentData.question;
-            optionsContainer.innerHTML = '';
-
-            currentData.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.classList.add('option-btn');
-                button.innerText = option;
-                button.addEventListener('click', (e) => handleAnswer(e, index));
-                optionsContainer.appendChild(button);
+            currentQuestion.options.forEach((option) => {
+                const li = document.createElement("li");
+                li.className = "option-item";
+                li.textContent = option.text;
+                
+                li.addEventListener("click", () => {
+                    document.querySelectorAll(".option-item").forEach(el => el.classList.remove("selected"));
+                    li.classList.add("selected");
+                    userResponses[currentQuestion.id] = option;
+                    nextBtn.disabled = false;
+                });
+                optionsContainer.appendChild(li);
             });
-            isAnswering = false; 
+
+            const progressPercent = ((index) / questions.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
         }
 
-        function handleAnswer(e, selectedIndex) {
-            if (isAnswering) return; 
-            isAnswering = true;
+        nextBtn.addEventListener("click", () => {
+            const currentQuestion = questions[currentQuestionIndex];
+            totalScore += userResponses[currentQuestion.id].score;
 
-            const selectedButton = e.target;
-            const allButtons = optionsContainer.querySelectorAll('.option-btn');
-            const currentData = quizData[currentQuestionIndex];
-
-            const rect = selectedButton.getBoundingClientRect();
-            const burstX = rect.left + rect.width / 2;
-            const burstY = rect.top + rect.height / 2;
-            particleSystem.burstParticles(burstX, burstY, 35);
-
-            totalScore += currentData.scores[selectedIndex];
-            
-            clickSound.currentTime = 0;
-            clickSound.play().catch(e => {});
-            
-            selectedButton.classList.add('btn-selected');
-            allButtons.forEach(btn => { if (btn !== selectedButton) btn.classList.add('disabled'); });
-
-            setTimeout(() => {
-                quizBox.classList.add('quiz-pull-out');
-                bgLayer.classList.add('bg-blur-effect');
-
+            if (currentQuestionIndex < questions.length - 1) {
+                questionScreen.classList.remove("active");
                 setTimeout(() => {
-                    currentQuestionIndex++;
-                    if (currentQuestionIndex < quizData.length) {
-                        quizBox.style.transition = 'none';
-                        quizBox.classList.remove('quiz-pull-out');
-                        quizBox.classList.add('quiz-pull-in-prepare');
-                        setTimeout(() => {
-                            quizBox.style.transition = '';
-                            loadQuestion();
-                        }, 50);
-                    } else {
-                        showResults();
-                    }
-                }, 600);
-            }, 600);
-        }
-
-        function triggerFastConfetti() {
-            var duration = 2 * 1000; 
-            var end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 12, angle: 60, spread: 65, origin: { x: 0, y: 0.85 } });
-                confetti({ particleCount: 12, angle: 120, spread: 65, origin: { x: 1, y: 0.85 } });
-                if (Date.now() < end) { requestAnimationFrame(frame); }
-            }());
-        }
-
-        // --- إعداد وعرض واجهة النتائج مع ضخ النصوص العربية الجديدة ديناميكياً وعزلها ---
-        function showResults() {
-            questionScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-            quizBox.style.transition = '';
-            quizBox.classList.remove('quiz-pull-out', 'quiz-pull-in-prepare');
-            
-            bgLayer.classList.add('hidden');
-            overlayLayer.classList.add('welcome-overlay'); 
-            
-            let finalCalculatedScore = (totalScore / 6).toFixed(1);
-            let resultWord = "";
-            let fullDynamicContent = ""; 
-            
-            if (finalCalculatedScore >= 91.1 && finalCalculatedScore <= 100.0) {
-                document.body.style.backgroundImage = "url('bg1.png')";
-                resultWord = "Pink Glow";
-                
-                fullDynamicContent = `
-                    الانتعاش، الثقة و الاهتمام واضحين بكل تفاصيل الـ whisper الخاصة بيك… و لمسة عناية بسيطة تخلي حضورك ما ينوصف وينذكر دائمًا.<br><br>
-                    أرسل لنا نتيجة الـ Whisper الخاصة بيك (لقطة شاشة) و عيش تجربة الـ Pink Spa بكل تفاصيلها ✨
-                `;
-                triggerFastConfetti();
-                
-            } else if (finalCalculatedScore >= 70.0 && finalCalculatedScore <= 91.0) {
-                document.body.style.backgroundImage = "url('bg2.png')";
-                resultWord = "Pink Balance";
-                
-                fullDynamicContent = `
-                    أحيانًا التفاصيل الصغيرة بعنايتك اليومية تأثر على انتعاشك و ثقتك أكثر مما تتوقع… وكل اللي تحتاجه هو اللمسة الصح للـ whisper الخاصة بيك.<br><br>
-                    أرسل لنا نتيجة الـ Whisper الخاصة بيك (لقطة شاشة) و عيش تجربة الـ Pink Spa بكل تفاصيلها ✨
-                `;
-                
-            } else if (finalCalculatedScore < 70.0) {
-                document.body.style.backgroundImage = "url('bg3.png')";
-                resultWord = "Pink Revival";
-                
-                fullDynamicContent = `
-                    الـ whisper الخاصة بيك جاهزة لبداية جديدة و منعشة… و خطوة وحدة ممكن تطلع كل الـ Pink Glow اللي بداخلك.<br><br>
-                    أرسل لنا نتيجة الـ Whisper الخاصة بيك (لقطة شاشة) و عيش تجربة الـ Pink Spa بكل تفاصيلها ✨
-                `;
+                    loadQuestion(currentQuestionIndex + 1);
+                    questionScreen.classList.add("active");
+                }, 300);
+            } else {
+                showLoadingAndCalculate();
             }
-            
-            badgeContainer.innerText = resultWord;
-            scoreContainer.innerText = `${finalCalculatedScore}%`;
-            descriptionContainer.innerHTML = fullDynamicContent;
+        });
+
+        function showLoadingAndCalculate() {
+            questionScreen.classList.remove("active");
+            setTimeout(() => {
+                questionScreen.style.display = "none";
+                loadingScreen.style.display = "block";
+                setTimeout(() => loadingScreen.classList.add("active"), 50);
+                
+                let resultClassification = "";
+                if (totalScore <= 4) {
+                    resultClassification = "Pink Glow";
+                } else if (totalScore <= 10) {
+                    resultClassification = "Pink Balance";
+                } else {
+                    resultClassification = "Pink Revival";
+                }
+
+                // توليد الكود بصيغة متناسقة مع تاريخ اليوم الفعلي تلقائياً
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = String(now.getFullYear()).slice(-2);
+                const randomQuad = Math.floor(1000 + Math.random() * 9000);
+                generatedCode = `PW-${day}${month}${year}-${randomQuad}`;
+
+                const payload = {
+                    code: generatedCode,
+                    result: resultClassification,
+                    score: totalScore,
+                    q1: userResponses["q1"].text,
+                    q2: userResponses["q2"].text,
+                    q3: userResponses["q3"].text,
+                    q4: userResponses["q4"].text,
+                    q5: userResponses["q5"].text,
+                    q6: userResponses["q6"].text
+                };
+
+                // إرسال البيانات فوراً وسحابياً للجوجل شيت في الخلفية بدون حجب واجهة المستخدم
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                }).then(() => {
+                    displayFinalResults(resultClassification, generatedCode);
+                }).catch(err => {
+                    console.error("Error sending telemetry data:", err);
+                    displayFinalResults(resultClassification, generatedCode);
+                });
+
+            }, 300);
         }
-    </script>
-</body>
-</html>
+
+        function displayFinalResults(result, code) {
+            setTimeout(() => {
+                loadingScreen.classList.remove("active");
+                setTimeout(() => {
+                    loadingScreen.style.display = "none";
+                    resultScreen.style.display = "block";
+                    setTimeout(() => resultScreen.classList.add("active"), 50);
+                    
+                    changeTheme(7);
+
+                    resultDisplay.textContent = result;
+                    finalCodeDisplay.textContent = code;
+
+                    // تعديل الرابط ليقوم بفتح شات واتساب وتجهيز رسالة الكود فقط بنظافة وسهولة
+                    const encodedMessage = encodeURIComponent(`الكود الخاص بي هو: ${code}`);
+                    whatsappLink.href = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodedMessage}`;
+                }, 300);
+            }, 2500);
