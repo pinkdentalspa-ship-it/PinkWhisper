@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pink Dental Spa - Enter the PINK world</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
@@ -27,12 +27,13 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            overflow: hidden;
-            transition: background 1s ease, background-image 1s ease;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 10px 0;
         }
 
         #threeCanvasContainer {
-            position: absolute;
+            position: fixed; 
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 1;
@@ -45,7 +46,7 @@
         }
 
         .bg-slider {
-            position: absolute;
+            position: fixed; 
             top: 0; left: 0; right: 0; bottom: 0;
             background-size: cover;
             background-position: center;
@@ -63,7 +64,7 @@
         }
 
         .overlay {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.02); 
             z-index: 2;
@@ -75,7 +76,7 @@
         }
 
         #sparkleCanvas {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 3; 
@@ -85,7 +86,7 @@
         }
 
         #particleCanvas {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 5;
@@ -97,9 +98,9 @@
             z-index: 4;
             background: transparent; 
             border: none;
-            padding: 15px;
+            padding: 10px;
             width: 95%;
-            max-width: 440px;
+            max-width: 420px;
             box-shadow: none;
             text-align: center;
             transform: scale(1);
@@ -110,7 +111,7 @@
         .card-box {
             background: #ffffff;
             border-radius: 32px;
-            padding: 40px 30px;
+            padding: 35px 25px;
             box-shadow: 0 25px 60px rgba(180, 20, 100, 0.12);
             display: flex;
             flex-direction: column;
@@ -133,37 +134,36 @@
             outline: none;
             background-color: #000;
             object-fit: cover;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
         }
 
         .main-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 2.4rem;
+            font-size: 1.8rem;
             color: #2b353c;
-            font-weight: 600;
-            line-height: 1.25;
-            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 15px;
             text-shadow: none;
-            direction: ltr;
+            direction: rtl;
         }
 
         .sub-title {
-            font-size: 1.05rem;
-            color: #9aa4ac;
+            font-size: 0.95rem;
+            color: #8c969e;
             line-height: 1.6;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-weight: 500;
-            max-width: 90%;
-            direction: ltr;
+            max-width: 95%;
+            direction: rtl;
         }
 
         .start-btn {
             background: linear-gradient(to left, #ff00cc, #ffc0cb);
             border: none;
-            padding: 16px 45px;
-            border-radius: 20px;
+            padding: 14px 40px;
+            border-radius: 18px;
             color: #ffffff; 
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
@@ -172,9 +172,9 @@
             gap: 12px;
             transition: all 0.3s ease;
             box-shadow: 0 10px 25px rgba(255, 0, 204, 0.25);
-            direction: ltr;
+            direction: rtl;
             width: 90%;
-            max-width: 290px;
+            max-width: 280px;
         }
 
         .start-btn .heart-icon {
@@ -184,7 +184,7 @@
         }
 
         .start-btn:hover, .start-btn:active {
-            transform: scale(1.03);
+            transform: scale(1.02);
             box-shadow: 0 12px 30px rgba(255, 0, 204, 0.35);
             opacity: 0.95;
         }
@@ -194,12 +194,12 @@
             z-index: 100;
             background: rgba(255, 20, 147, 0.18); 
             border: 1px solid rgba(255, 20, 147, 0.4); 
-            padding: 18px 22px;
-            border-radius: 20px;
+            padding: 16px 20px;
+            border-radius: 18px;
             color: #ffffff; 
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
             cursor: pointer;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             text-align: right;
@@ -239,8 +239,8 @@
         }
 
         h2 {
-            margin-bottom: 35px;
-            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
             line-height: 1.6;
             font-weight: 700;
             color: #ffffff;
@@ -256,7 +256,7 @@
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         @keyframes glassSelected {
@@ -280,15 +280,14 @@
             display: none !important;
         }
 
-        /* تعديل شاشة النتيجة الزجاجية بالكامل لضغط المساحات عمودياً */
         #result-screen {
-            background: rgba(255, 255, 255, 0.2); 
+            background: rgba(255, 255, 255, 0.18); 
             backdrop-filter: blur(25px); 
             -webkit-backdrop-filter: blur(25px); 
-            border-radius: 35px;
-            padding: 25px 20px; /* تقليل البادينغ الداخلي للعلبة الزجاجية */
+            border-radius: 30px;
+            padding: 22px 16px; 
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
             animation: fadeInResult 0.8s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
             display: flex;
@@ -297,16 +296,16 @@
         }
 
         @keyframes fadeInResult {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .result-intro {
-            font-size: 0.95rem; /* تصغير طفيف لتوفير مساحة */
+            font-size: 0.9rem; 
             font-weight: 700;
             color: #ff66a3; 
-            margin-bottom: 6px; /* تقليل الهامش السفلي */
-            letter-spacing: 1px;
+            margin-bottom: 4px; 
+            letter-spacing: 0.5px;
             text-transform: uppercase;
             animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
@@ -317,13 +316,13 @@
         }
 
         .result-badge {
-            font-size: 2.6rem; /* تصغير حجم الخط من 3.4rem لتوفير مساحة عمودية هائلة */
+            font-size: 2.3rem; 
             font-weight: 800;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            margin-bottom: 4px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2px;
             animation: badgeBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
         }
 
@@ -334,44 +333,44 @@
         }
 
         .result-score {
-            font-size: 1.4rem; /* تصغير حجم النسبة المئوية من 1.8rem */
+            font-size: 1.3rem; 
             font-weight: 600;
             color: #ffffff;
-            margin-bottom: 12px; /* تقليل الفراغ */
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px; 
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
         .result-description {
-            font-size: 0.95rem; /* تصغير الوصف البرجرافي قليلاً من 1.05rem لتفادي الـ Wrap الزائد */
+            font-size: 0.9rem; 
             font-weight: 500;
             color: #ffffff;
-            line-height: 1.6;
-            padding: 0 5px;
-            margin-bottom: 18px; /* تقريب المسافة جداً من علبة الكود */
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+            line-height: 1.5;
+            padding: 0 4px;
+            margin-bottom: 15px; 
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
             text-align: center;
             animation: fadeInUp 0.6s ease-out 0.45s both;
         }
 
-        /* تعديل علبة الكود لتكون ملمومة وضمن النطاق المرئي */
         .premium-code-box {
             background: rgba(255, 255, 255, 0.15);
             border: 2px dashed rgba(255, 102, 163, 0.6);
-            padding: 10px 14px; /* ضغط داخلي عمودي */
-            border-radius: 14px;
+            padding: 8px 12px; 
+            border-radius: 12px;
             color: #ffffff;
-            font-size: 1.1rem; /* تصغير حجم الخط الخاص بالـ Code */
+            font-size: 0.95rem; 
             font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 15px; /* تقليل الهامش لجذب زر الواتساب للأعلى */
+            letter-spacing: 0.5px;
+            margin-bottom: 15px; 
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
-            max-width: 300px;
+            max-width: 290px;
+            white-space: nowrap; 
             transition: all 0.3s ease;
             animation: fadeInUp 0.6s ease-out 0.55s both;
         }
@@ -382,22 +381,27 @@
         }
 
         .premium-code-box span.copy-lbl {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             background: #ff66a3;
             color: #fff;
             padding: 2px 6px;
-            border-radius: 6px;
+            border-radius: 5px;
             font-weight: 500;
+            flex-shrink: 0;
         }
 
-        /* زر الواتساب الفخم - أصبح مرتفعاً ومحفوظاً داخل الشاشة تماماً */
+        #code-text-placeholder {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .whatsapp-btn {
             background: linear-gradient(135deg, #25D366, #128C7E);
             border: none;
-            padding: 14px 24px; /* تصغير خفيف للبادينغ ليظهر كاملاً */
-            border-radius: 18px;
+            padding: 12px 20px; 
+            border-radius: 16px;
             color: #ffffff;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             text-decoration: none;
             display: inline-flex;
@@ -405,19 +409,19 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            max-width: 300px;
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            max-width: 290px;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
             transition: all 0.3s ease;
             animation: fadeInUp 0.6s ease-out 0.65s both;
         }
 
         .whatsapp-btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -439,8 +443,8 @@
                     <source src="intro.mp4" type="video/mp4">
                     متصفحك لا يدعم تشغيل الفيديو.
                 </video>
-                <div class="main-title">Enter the PINK<br>world</div>
-                <div class="sub-title">Not everything needs to be said loud...Some things are only Whispered</div>
+                <div class="main-title">مرحباً بك في عالم PINK</div>
+                <div class="sub-title">تبدأ التفاصيل بهمسة خفيفة، هادئة و ناعمة</div>
                 <button class="start-btn" id="start-quiz-btn">
                     <span>Pink Whisper</span>
                     <span class="heart-icon">🤍</span>
@@ -465,7 +469,7 @@
             </div>
 
             <a href="#" target="_blank" class="whatsapp-btn" id="whatsapp-redirect-btn">
-                إرسال الكود وتفعيل الجلسة عبر WhatsApp
+                تنسيق موعد وتأكيد الملف المشفر عبر WhatsApp
             </a>
         </div>
     </div>
@@ -559,7 +563,7 @@
 
         const quizData = [
             { id: "q1", question: "كم مرة تشرب قهوة او شاي يوميا؟", options: ["ولا مرة", "مرة او مرتان", "من ثلاث الى خمس مرات", "عايش عليها"], scores: [100, 70, 35, 0], image: "bg1.png" },
-            { id: "q2", question: "هل تدخن؟", options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"], scores: [100, 70, 35, 0], image: "bg2.png" },
+            { id: "q2", question: "هل تدخن？", options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"], scores: [100, 70, 35, 0], image: "bg2.png" },
             { id: "q3", question: "هل تشرب ماء كافي يوميا؟", options: ["نعم", "أحياناً", "لا"], scores: [100, 50, 0], image: "bg3.png" },
             { id: "q4", question: "احد عرض عليك علكة او نعناع بشكل مفاجئ؟", options: ["لا", "احيانا", "مرات متكررة"], scores: [100, 50, 0], image: "bg4.png" },
             { id: "q5", question: "تحس بجفاف بالفم؟", options: ["نادرا", "احيانا", "دائما"], scores: [100, 50, 0], image: "bg5.png" },
@@ -906,7 +910,7 @@
                 document.body.style.backgroundImage = "url('bg1.png')";
                 fullDynamicContent = `
                     الانتعاش، الثقة والاهتمام واضحين بكل تفاصيل الـ whisper الخاصة بك… ولمسة عناية بسيطة تخلي حضورك ما ينوصف وينذكر دائمًا.<br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك فوراً ✨
+                    اضغط على الزر بالأسفل لتنسيق موعد زيارتك الفاخرة للـ Spa ✨
                 `;
                 triggerFastConfetti();
                 
@@ -914,14 +918,14 @@
                 document.body.style.backgroundImage = "url('bg2.png')";
                 fullDynamicContent = `
                     أحيانًا التفاصيل الصغيرة بعنايتك اليومية تأثر على انتعاشك وثقتك أكثر مما تتوقع… وكل اللي تحتاجه هو اللمسة الصح للـ whisper الخاصة بك.<br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك فوراً ✨
+                    اضغط على الزر بالأسفل لتنسيق موعد زيارتك الفاخرة للـ Spa ✨
                 `;
                 
             } else if (resultWord === "Pink Revival") {
                 document.body.style.backgroundImage = "url('bg3.png')";
                 fullDynamicContent = `
                     الـ whisper الخاصة بك جاهزة لبداية جديدة ومنعشة… وخطوة وحدة ممكن تطلع كل الـ Pink Glow اللي بداخلك.<br>
-                    اضغط على الزر بالأسفل لإرسال كود الحالة وتأكيد حجز جلستك فوراً ✨
+                    اضغط على الزر بالأسفل لتنسيق موعد زيارتك الفاخرة للـ Spa ✨
                 `;
             }
             
@@ -930,14 +934,17 @@
             descriptionContainer.innerHTML = fullDynamicContent;
             
             codeTextPlaceholder.innerText = code;
-            const encodedText = encodeURIComponent(`الكود الخاص بي هو: ${code}`);
+            
+            // صياغة الرسالة الفخمة الموجهة لخدمة العملاء بالعيادة
+            const eliteMessage = `مرحباً عيادة فارس. قمت بإتمام تجربة Pink Whisper وتبين أن درجة الـ Whisper الخاصة بي هي (${resultWord}) بنسبة ${finalCalculatedScore}%. كود الملف الرقمي المشفر الخاص بي هو: ${code}. أود تأكيد رغبتي في تنسيق موعد لزيارة الـ Pink Spa الخاص بالعيادة.`;
+            const encodedText = encodeURIComponent(eliteMessage);
             whatsappRedirectBtn.href = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodedText}`;
         }
 
         function copyCodeToClipboard() {
             if(!finalGeneratedCode) return;
             navigator.clipboard.writeText(finalGeneratedCode).then(() => {
-                alert("تم نسخ كود الحالة الخاص بك بنجاح: " + finalGeneratedCode);
+                alert("تم نسخ كود الملف الرقمي بنجاح: " + finalGeneratedCode);
             }).catch(err => {
                 console.error("Failed to copy text: ", err);
             });
