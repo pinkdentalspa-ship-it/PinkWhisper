@@ -53,14 +53,8 @@
             background-repeat: no-repeat;
             z-index: 0;
             opacity: 0; 
-            filter: blur(0px);
             transform: scale(1);
-            transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
-        }
-
-        .bg-blur-effect {
-            filter: blur(4px);
-            transform: scale(1.03);
+            transition: opacity 0.6s ease-in-out; /* انتقال الخلفيات الطبيعي */
         }
 
         .overlay {
@@ -105,7 +99,8 @@
             text-align: center;
             transform: scale(1);
             opacity: 1;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-in-out;
+            /* تم تنعيم الـ transition هنا لمنع أي زحف مفاجئ للحاوية عند اختيار الإجابة */
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
         }
 
         .card-box {
@@ -201,7 +196,7 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
             text-align: right;
             width: 100%;
             outline: none;
@@ -223,17 +218,13 @@
             background: rgba(255, 20, 147, 0.45); 
             border-color: rgba(255, 20, 147, 0.8);
             color: #ffffff;
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.25);
         }
 
         .quiz-pull-out {
-            transform: scale(0.92);
             opacity: 0;
         }
 
         .quiz-pull-in-prepare {
-            transform: scale(1.08);
             opacity: 0;
             transition: none;
         }
@@ -259,21 +250,20 @@
             gap: 12px;
         }
 
+        /* تم تعديل هذا الأنيميشن لإلغاء الـ scale تماماً ومنع الاهتزاز والزحف */
         @keyframes glassSelected {
-            0% { background: rgba(255, 20, 147, 0.45); color: #ffffff;}
-            50% { transform: scale(1.06); }
-            100% { background: #ff1493; border-color: #ff1493; color: #ffffff; text-shadow: none; transform: scale(1.04); box-shadow: 0 10px 25px rgba(255, 20, 147, 0.35), 0 0 30px rgba(255, 20, 147, 0.5);}
+            0% { background: rgba(255, 20, 147, 0.45); color: #ffffff; }
+            100% { background: #ff1493; border-color: #ff1493; color: #ffffff; text-shadow: none; box-shadow: 0 10px 25px rgba(255, 20, 147, 0.35);}
         }
 
         .btn-selected {
-            animation: glassSelected 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: glassSelected 0.4s ease-in-out forwards;
             pointer-events: none;
         }
 
         .disabled {
             pointer-events: none;
             opacity: 0.15;
-            transform: scale(0.96);
         }
 
         .hidden {
@@ -342,13 +332,13 @@
         }
 
         .result-description {
-            font-size: 0.9rem; 
-            font-weight: 500;
+            font-size: 0.95rem; 
+            font-weight: 600;
             color: #ffffff;
             line-height: 1.5;
             padding: 0 4px;
-            margin-bottom: 15px; 
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+            margin-bottom: 20px; 
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
             text-align: center;
             animation: fadeInUp 0.6s ease-out 0.45s both;
         }
@@ -396,12 +386,12 @@
         }
 
         .whatsapp-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
+            background: #25D366; 
             border: none;
             padding: 12px 20px; 
             border-radius: 16px;
             color: #ffffff;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 700;
             text-decoration: none;
             display: inline-flex;
@@ -418,6 +408,7 @@
         .whatsapp-btn:hover {
             transform: scale(1.02);
             box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            background: #20ba5a;
         }
 
         @keyframes fadeInUp {
@@ -469,7 +460,7 @@
             </div>
 
             <a href="#" target="_blank" class="whatsapp-btn" id="whatsapp-redirect-btn">
-                تنسيق موعد وتأكيد الملف المشفر عبر WhatsApp
+                Pink Whisper
             </a>
         </div>
     </div>
@@ -781,7 +772,6 @@
         function loadQuestion() {
             const currentData = quizData[currentQuestionIndex];
             quizBox.classList.remove('quiz-pull-out', 'quiz-pull-in-prepare');
-            bgLayer.classList.remove('bg-blur-effect');
             
             bgLayer.style.backgroundImage = `url('${currentData.image}')`;
             questionText.innerText = currentData.question;
@@ -820,8 +810,8 @@
             allButtons.forEach(btn => { if (btn !== selectedButton) btn.classList.add('disabled'); });
 
             setTimeout(() => {
+                // الانتقال إلى السؤال التالي أو النتيجة بنعومة تامة وفقط الـ Fade الطبيعي عالي الانسيابية للخلفيات
                 quizBox.classList.add('quiz-pull-out');
-                bgLayer.classList.add('bg-blur-effect');
 
                 setTimeout(() => {
                     currentQuestionIndex++;
@@ -836,8 +826,8 @@
                     } else {
                         shipDataAndShowResults();
                     }
-                }, 600);
-            }, 600);
+                }, 400); 
+            }, 400);
         }
 
         function triggerFastConfetti() {
@@ -904,39 +894,23 @@
             bgLayer.classList.add('hidden');
             overlayLayer.classList.add('welcome-overlay'); 
             
-            let fullDynamicContent = ""; 
-            
             if (resultWord === "Pink Glow") {
                 document.body.style.backgroundImage = "url('bg1.png')";
-                fullDynamicContent = `
-                    الانتعاش، الثقة والاهتمام واضحين بكل تفاصيل الـ whisper الخاصة بك… ولمسة عناية بسيطة تخلي حضورك ما ينوصف وينذكر دائمًا.<br>
-                    اضغط على الزر بالأسفل لتنسيق موعد زيارتك الفاخرة للـ Spa ✨
-                `;
                 triggerFastConfetti();
-                
             } else if (resultWord === "Pink Balance") {
                 document.body.style.backgroundImage = "url('bg2.png')";
-                fullDynamicContent = `
-                    أحيانًا التفاصيل الصغيرة بعنايتك اليومية تأثر على انتعاشك وثقتك أكثر مما تتوقع… وكل اللي تحتاجه هو اللمسة الصح للـ whisper الخاصة بك.<br>
-                    اضغط على الزر بالأسفل لتنسيق موعد زيارتك الفاخرة للـ Spa ✨
-                `;
-                
             } else if (resultWord === "Pink Revival") {
                 document.body.style.backgroundImage = "url('bg3.png')";
-                fullDynamicContent = `
-                    الـ whisper الخاصة بك جاهزة لبداية جديدة ومنعشة… وخطوة وحدة ممكن تطلع كل الـ Pink Glow اللي بداخلك.<br>
-                    اضغط على الزر بالأسفل لتنسيق موعد زيارتك الفاخرة للـ Spa ✨
-                `;
             }
             
             badgeContainer.innerText = resultWord;
             scoreContainer.innerText = `${finalCalculatedScore}%`;
-            descriptionContainer.innerHTML = fullDynamicContent;
+            
+            descriptionContainer.innerHTML = "تحب تعرف شنو يعني هاي النتيجة؟ اضغط على الزر بالاسفل 👇";
             
             codeTextPlaceholder.innerText = code;
             
-            // صياغة الرسالة الفخمة الموجهة لخدمة العملاء بالعيادة
-            const eliteMessage = `مرحباً عيادة فارس. قمت بإتمام تجربة Pink Whisper وتبين أن درجة الـ Whisper الخاصة بي هي (${resultWord}) بنسبة ${finalCalculatedScore}%. كود الملف الرقمي المشفر الخاص بي هو: ${code}. أود تأكيد رغبتي في تنسيق موعد لزيارة الـ Pink Spa الخاص بالعيادة.`;
+            const eliteMessage = `${code}\nارسل الكود`;
             const encodedText = encodeURIComponent(eliteMessage);
             whatsappRedirectBtn.href = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodedText}`;
         }
