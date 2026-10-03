@@ -1,220 +1,417 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Pink Dental Spa - Enter the PINK world</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700;900&display=swap"
+        rel="stylesheet"
+    >
 
+    <!-- Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family:
+                'Cairo',
+                'Plus Jakarta Sans',
+                'Segoe UI',
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
+
             -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
         }
 
         body {
             display: flex;
             justify-content: center;
             align-items: center;
+
             min-height: 100vh;
+
             position: relative;
+
             background-color: #1a0511;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+
             overflow-x: hidden;
             overflow-y: auto;
+
             padding: 10px 0;
+
+            transition:
+                background-image 0.8s ease,
+                background-color 0.8s ease;
         }
+
+        /* =========================================================
+           THREE.JS BACKGROUND
+        ========================================================= */
 
         #threeCanvasContainer {
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 100%;
+
             z-index: 1;
-            transition: opacity 1.2s ease-in-out, filter 1.2s ease-in-out;
+
+            transition:
+                opacity 1.2s ease-in-out,
+                filter 1.2s ease-in-out;
+
             opacity: 1;
         }
 
         .dimmed-smoke {
-            filter: brightness(0.4) contrast(1.1);
+            filter:
+                brightness(0.4)
+                contrast(1.1);
         }
+
+        /* =========================================================
+           QUESTION BACKGROUND
+        ========================================================= */
 
         .bg-slider {
             position: fixed;
+
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+
             z-index: 0;
+
             opacity: 0;
+
             transform: scale(1);
-            transition: opacity 0.6s ease-in-out;
+
+            transition:
+                opacity 0.6s ease-in-out;
         }
+
+        /* =========================================================
+           OVERLAY
+        ========================================================= */
 
         .overlay {
             position: fixed;
+
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+
             background: rgba(0, 0, 0, 0.02);
+
             z-index: 2;
-            transition: background 1s ease;
+
+            transition:
+                background 1s ease;
         }
 
         .welcome-overlay {
             background: transparent !important;
         }
 
+        /* =========================================================
+           SPARKLES
+        ========================================================= */
+
         #sparkleCanvas {
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 100%;
+
             z-index: 3;
+
             pointer-events: none;
+
             opacity: 1;
-            transition: opacity 0.8s ease-in-out;
+
+            transition:
+                opacity 0.8s ease-in-out;
         }
+        /* =========================================================
+           PARTICLES
+        ========================================================= */
 
         #particleCanvas {
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 100%;
+
             z-index: 5;
+
             pointer-events: none;
         }
 
+        /* =========================================================
+           MAIN CONTAINER
+        ========================================================= */
+
         .quiz-container {
             position: relative;
+
             z-index: 4;
+
             background: transparent;
+
             border: none;
+
             padding: 10px;
+
             width: 95%;
             max-width: 420px;
+
             box-shadow: none;
+
             text-align: center;
+
             transform: scale(1);
+
             opacity: 1;
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+
+            transition:
+                opacity 0.4s ease-in-out,
+                transform 0.4s ease-in-out;
         }
+
+        /* =========================================================
+           WELCOME CARD
+        ========================================================= */
 
         .card-box {
             background: #ffffff;
+
             border-radius: 32px;
+
             padding: 35px 25px;
-            box-shadow: 0 25px 60px rgba(180, 20, 100, 0.12);
+
+            box-shadow:
+                0 25px 60px rgba(180, 20, 100, 0.12);
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             width: 100%;
         }
 
         .welcome-screen {
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             width: 100%;
         }
+
         .welcome-video {
             width: 100%;
+
             max-width: 380px;
+
             border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.06);
+
             outline: none;
+
             background-color: #000;
+
             object-fit: cover;
+
             margin-bottom: 25px;
         }
 
         .main-title {
             font-size: 1.8rem;
+
             color: #2b353c;
+
             font-weight: 700;
+
             line-height: 1.4;
+
             margin-bottom: 15px;
+
             text-shadow: none;
+
             direction: rtl;
         }
 
         .sub-title {
             font-size: 0.95rem;
+
             color: #8c969e;
+
             line-height: 1.6;
+
             margin-bottom: 30px;
+
             font-weight: 500;
+
             max-width: 95%;
+
             direction: rtl;
         }
 
+        /* =========================================================
+           START BUTTON
+        ========================================================= */
+
         .start-btn {
-            background: linear-gradient(to left, #ff00cc, #ffc0cb);
+            background:
+                linear-gradient(
+                    to left,
+                    #ff00cc,
+                    #ffc0cb
+                );
+
             border: none;
+
             padding: 14px 40px;
+
             border-radius: 18px;
+
             color: #ffffff;
+
             font-size: 1.1rem;
+
             font-weight: 600;
+
             cursor: pointer;
+
             display: inline-flex;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 12px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(255, 0, 204, 0.25);
+
+            transition:
+                all 0.3s ease;
+
+            box-shadow:
+                0 10px 25px rgba(255, 0, 204, 0.25);
+
             direction: rtl;
+
             width: 90%;
+
             max-width: 280px;
         }
 
         .start-btn .heart-icon {
             font-size: 1.1rem;
+
             display: inline-block;
+
             line-height: 1;
         }
 
         .start-btn:hover,
         .start-btn:active {
             transform: scale(1.02);
-            box-shadow: 0 12px 30px rgba(255, 0, 204, 0.35);
+
+            box-shadow:
+                0 12px 30px rgba(255, 0, 204, 0.35);
+
             opacity: 0.95;
         }
 
+        /* =========================================================
+           QUESTION BUTTONS
+        ========================================================= */
+
         .option-btn {
             position: relative;
+
             z-index: 100;
-            background: rgba(255, 20, 147, 0.18);
-            border: 1px solid rgba(255, 20, 147, 0.4);
+
+            background:
+                rgba(255, 20, 147, 0.18);
+            border:
+                1px solid rgba(255, 20, 147, 0.4);
+
             padding: 16px 20px;
+
             border-radius: 18px;
+
             color: #ffffff;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+
+            text-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.6);
+
             cursor: pointer;
+
             font-size: 1rem;
+
             font-weight: 600;
-            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+            transition:
+                background 0.3s ease,
+                border-color 0.3s ease,
+                color 0.3s ease;
+
             text-align: right;
+
             width: 100%;
+
             outline: none;
+
             overflow: hidden;
-            animation: buttonSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+            animation:
+                buttonSlideIn
+                0.5s
+                cubic-bezier(0.34, 1.56, 0.64, 1)
+                both;
         }
 
         .option-btn:nth-child(1) {
@@ -234,6 +431,7 @@
         }
 
         @keyframes buttonSlideIn {
+
             from {
                 opacity: 0;
                 transform: translateX(-30px);
@@ -243,35 +441,65 @@
                 opacity: 1;
                 transform: translateX(0);
             }
+
         }
 
         .option-btn:hover,
         .option-btn:active {
-            background: rgba(255, 20, 147, 0.45);
-            border-color: rgba(255, 20, 147, 0.8);
+            background:
+                rgba(255, 20, 147, 0.45);
+
+            border-color:
+                rgba(255, 20, 147, 0.8);
+
             color: #ffffff;
         }
 
         .quiz-pull-out {
             opacity: 0;
+
+            transform:
+                translateY(-12px)
+                scale(0.98);
         }
 
         .quiz-pull-in-prepare {
             opacity: 0;
+
+            transform:
+                translateY(12px)
+                scale(0.98);
+
             transition: none;
         }
 
+        /* =========================================================
+           QUESTION
+        ========================================================= */
+
         h2 {
             margin-bottom: 25px;
+
             font-size: 1.3rem;
+
             line-height: 1.6;
+
             font-weight: 700;
+
             color: #ffffff;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
-            animation: fadeInDown 0.5s ease-out;
+
+            text-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.8),
+                0 1px 3px rgba(0, 0, 0, 0.9);
+
+            animation:
+                fadeInDown
+                0.5s
+                ease-out;
         }
 
         @keyframes fadeInDown {
+
             from {
                 opacity: 0;
                 transform: translateY(-15px);
@@ -281,35 +509,55 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+
         }
 
         .options-list {
             display: flex;
+
             flex-direction: column;
+
             gap: 12px;
         }
+
         @keyframes glassSelected {
+
             0% {
-                background: rgba(255, 20, 147, 0.45);
+                background:
+                    rgba(255, 20, 147, 0.45);
+
                 color: #ffffff;
             }
 
             100% {
                 background: #ff1493;
+
                 border-color: #ff1493;
+
                 color: #ffffff;
+
                 text-shadow: none;
-                box-shadow: 0 10px 25px rgba(255, 20, 147, 0.35);
+
+                box-shadow:
+                    0 10px 25px
+                    rgba(255, 20, 147, 0.35);
             }
+
         }
 
         .btn-selected {
-            animation: glassSelected 0.4s ease-in-out forwards;
+            animation:
+                glassSelected
+                0.4s
+                ease-in-out
+                forwards;
+
             pointer-events: none;
         }
 
         .disabled {
             pointer-events: none;
+
             opacity: 0.15;
         }
 
@@ -317,44 +565,84 @@
             display: none !important;
         }
 
+        /* =========================================================
+           RESULT
+        ========================================================= */
+
         #result-screen {
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background:
+                rgba(255, 255, 255, 0.18);
+
+            backdrop-filter:
+                blur(25px);
+
+            -webkit-backdrop-filter:
+                blur(25px);
+
             border-radius: 30px;
+
             padding: 22px 16px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-            animation: fadeInResult 0.8s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.25);
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.25);
+
+            animation:
+                fadeInResult
+                0.8s
+                cubic-bezier(0.215, 0.610, 0.355, 1)
+                forwards;
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
         }
 
         @keyframes fadeInResult {
+
             from {
                 opacity: 0;
-                transform: translateY(15px);
+
+                transform:
+                    translateY(15px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
             }
+
         }
 
         .result-intro {
             font-size: 0.9rem;
+
             font-weight: 700;
+
             color: #ff66a3;
+
             margin-bottom: 4px;
+
             letter-spacing: 0.5px;
+
             text-transform: uppercase;
-            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+            animation:
+                popIn
+                0.5s
+                cubic-bezier(0.34, 1.56, 0.64, 1)
+                both;
         }
 
         @keyframes popIn {
+
             from {
                 opacity: 0;
                 transform: scale(0.4);
@@ -364,20 +652,35 @@
                 opacity: 1;
                 transform: scale(1);
             }
+
         }
 
         .result-badge {
             font-size: 2.3rem;
+
             font-weight: 800;
+
             color: #ffffff;
+
             text-transform: uppercase;
+
             letter-spacing: 0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+            text-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.2);
+
             margin-bottom: 2px;
-            animation: badgeBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+
+            animation:
+                badgeBounce
+                0.7s
+                cubic-bezier(0.34, 1.56, 0.64, 1)
+                0.15s
+                both;
         }
 
         @keyframes badgeBounce {
+
             0% {
                 opacity: 0;
                 transform: scale(0.4);
@@ -391,129 +694,278 @@
                 opacity: 1;
                 transform: scale(1);
             }
+
         }
 
         .result-score {
             font-size: 1.3rem;
+
             font-weight: 600;
+
             color: #ffffff;
+
             margin-bottom: 10px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            animation: fadeInUp 0.6s ease-out 0.3s both;
+
+            text-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.15);
+
+            animation:
+                fadeInUp
+                0.6s
+                ease-out
+                0.3s
+                both;
         }
 
         .result-description {
             font-size: 0.95rem;
+
             font-weight: 600;
+
             color: #ffffff;
+
             line-height: 1.5;
+
             padding: 0 4px;
+
             margin-bottom: 20px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+
+            text-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.3);
+
             text-align: center;
-            animation: fadeInUp 0.6s ease-out 0.45s both;
+
+            animation:
+                fadeInUp
+                0.6s
+                ease-out
+                0.45s
+                both;
         }
 
         .premium-code-box {
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px dashed rgba(255, 102, 163, 0.6);
+            background:
+                rgba(255, 255, 255, 0.15);
+
+            border:
+                2px dashed rgba(255, 102, 163, 0.6);
+
             padding: 8px 12px;
+
             border-radius: 12px;
+
             color: #ffffff;
+
             font-size: 0.95rem;
+
             font-weight: 700;
+
             letter-spacing: 0.5px;
+
             margin-bottom: 15px;
+
             cursor: pointer;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 8px;
+
             width: 100%;
+
             max-width: 290px;
+
             white-space: nowrap;
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.6s ease-out 0.55s both;
+
+            transition:
+                all 0.3s ease;
+
+            animation:
+                fadeInUp
+                0.6s
+                ease-out
+                0.55s
+                both;
         }
+
         .premium-code-box:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: #ff66a3;
+            background:
+                rgba(255, 255, 255, 0.25);
+
+            border-color:
+                #ff66a3;
         }
 
         .premium-code-box span.copy-lbl {
             font-size: 0.7rem;
             background: #ff66a3;
+
             color: #fff;
+
             padding: 2px 6px;
+
             border-radius: 5px;
+
             font-weight: 500;
+
             flex-shrink: 0;
         }
 
         #code-text-placeholder {
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
         .whatsapp-btn {
             background: #25D366;
+
             border: none;
+
             padding: 12px 20px;
+
             border-radius: 16px;
+
             color: #ffffff;
+
             font-size: 1.1rem;
+
             font-weight: 700;
+
             text-decoration: none;
+
             display: inline-flex;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 8px;
+
             width: 100%;
+
             max-width: 290px;
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.6s ease-out 0.65s both;
+
+            box-shadow:
+                0 6px 20px rgba(37, 211, 102, 0.3);
+
+            transition:
+                all 0.3s ease;
+
+            animation:
+                fadeInUp
+                0.6s
+                ease-out
+                0.65s
+                both;
         }
 
         .whatsapp-btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+
+            box-shadow:
+                0 8px 25px rgba(37, 211, 102, 0.4);
+
             background: #20ba5a;
         }
 
         @keyframes fadeInUp {
+
             from {
                 opacity: 0;
-                transform: translateY(12px);
+
+                transform:
+                    translateY(12px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
             }
+
         }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 480px) {
+
+            .quiz-container {
+                width: 94%;
+            }
+
+            .card-box {
+                padding:
+                    28px 20px;
+            }
+
+            .main-title {
+                font-size:
+                    1.55rem;
+            }
+
+            .sub-title {
+                font-size:
+                    0.88rem;
+            }
+
+            .result-badge {
+                font-size:
+                    1.9rem;
+            }
+
+        }
+
     </style>
 </head>
 
+
 <body>
+
+    <!-- =========================================================
+         BACKGROUND
+    ========================================================== -->
 
     <div id="threeCanvasContainer"></div>
 
-    <div class="bg-slider" id="bg-layer"></div>
+    <div
+        class="bg-slider"
+        id="bg-layer"
+    ></div>
 
-    <div class="overlay welcome-overlay" id="overlay-layer"></div>
+    <div
+        class="overlay welcome-overlay"
+        id="overlay-layer"
+    ></div>
 
     <canvas id="sparkleCanvas"></canvas>
+
     <canvas id="particleCanvas"></canvas>
 
 
-    <div class="quiz-container" id="quiz-box">
+    <!-- =========================================================
+         MAIN QUIZ CONTAINER
+    ========================================================== -->
 
-        <!-- =========================
-             WELCOME SCREEN
-        ========================== -->
+    <div
+        class="quiz-container"
+        id="quiz-box"
+    >
 
-        <div id="welcome-screen" class="welcome-screen">
+        <!-- =====================================================
+             WELCOME
+        ====================================================== -->
+
+        <div
+            id="welcome-screen"
+            class="welcome-screen"
+        >
 
             <div class="card-box">
 
@@ -523,21 +975,40 @@
                     playsinline
                     preload="auto"
                 >
-                    <source src="intro.mp4" type="video/mp4">
+
+                    <source
+                        src="intro.mp4"
+                        type="video/mp4"
+                    >
+
                     متصفحك لا يدعم تشغيل الفيديو.
+
                 </video>
+
 
                 <div class="main-title">
                     مرحباً بك في عالم PINK
                 </div>
 
+
                 <div class="sub-title">
                     تبدأ التفاصيل بهمسة خفيفة، هادئة و ناعمة
                 </div>
 
-                <button class="start-btn" id="start-quiz-btn">
-                    <span>Pink Whisper</span>
-                    <span class="heart-icon">🤍</span>
+
+                <button
+                    class="start-btn"
+                    id="start-quiz-btn"
+                    type="button"
+                >
+
+                    <span>
+                        Pink Whisper
+                    </span>
+                    <span class="heart-icon">
+                        🤍
+                    </span>
+
                 </button>
 
             </div>
@@ -545,11 +1016,14 @@
         </div>
 
 
-        <!-- =========================
-             QUESTION SCREEN
-        ========================== -->
+        <!-- =====================================================
+             QUESTIONS
+        ====================================================== -->
 
-        <div id="question-screen" class="hidden">
+        <div
+            id="question-screen"
+            class="hidden"
+        >
 
             <h2 id="question-text">
                 جاري تحضير تجربة الـ Spa...
@@ -563,35 +1037,43 @@
         </div>
 
 
-        <!-- =========================
-             RESULT SCREEN
-        ========================== -->
+        <!-- =====================================================
+             RESULT
+        ====================================================== -->
 
-        <div id="result-screen" class="hidden">
+        <div
+            id="result-screen"
+            class="hidden"
+        >
 
             <div class="result-intro">
                 Your Whisper Result
             </div>
+
 
             <div
                 id="badge-container"
                 class="result-badge"
             ></div>
 
+
             <div
                 id="score-container"
                 class="result-score"
             ></div>
 
+
             <div
                 id="description-container"
                 class="result-description"
             ></div>
+
+
             <div
                 class="premium-code-box"
                 id="premium-code-box"
-                onclick="copyCodeToClipboard()"
             >
+
                 <span id="code-text-placeholder">
                     PW-XXXXXX
                 </span>
@@ -599,11 +1081,14 @@
                 <span class="copy-lbl">
                     اضغط للنسخ
                 </span>
+
             </div>
+
 
             <a
                 href="#"
                 target="_blank"
+                rel="noopener"
                 class="whatsapp-btn"
                 id="whatsapp-redirect-btn"
             >
@@ -614,6 +1099,10 @@
 
     </div>
 
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
 
     <script>
 
@@ -629,15 +1118,372 @@
 
 
         /* =========================================================
+           DOM ELEMENTS
+        ========================================================== */
+
+        const threeContainer =
+            document.getElementById(
+                "threeCanvasContainer"
+            );
+
+        const bgLayer =
+            document.getElementById(
+                "bg-layer"
+            );
+
+        const overlayLayer =
+            document.getElementById(
+                "overlay-layer"
+            );
+
+        const sparkleCanvas =
+            document.getElementById(
+                "sparkleCanvas"
+            );
+
+        const particleCanvas =
+            document.getElementById(
+                "particleCanvas"
+            );
+
+        const quizBox =
+            document.getElementById(
+                "quiz-box"
+            );
+
+        const welcomeScreen =
+            document.getElementById(
+                "welcome-screen"
+            );
+
+        const questionScreen =
+            document.getElementById(
+                "question-screen"
+            );
+
+        const resultScreen =
+            document.getElementById(
+                "result-screen"
+            );
+
+        const questionText =
+            document.getElementById(
+                "question-text"
+            );
+
+        const optionsContainer =
+            document.getElementById(
+                "options-container"
+            );
+
+        const startQuizBtn =
+            document.getElementById(
+                "start-quiz-btn"
+            );
+        const introVideo =
+            document.getElementById(
+                "introVideo"
+            );
+
+        const badgeContainer =
+            document.getElementById(
+                "badge-container"
+            );
+
+        const scoreContainer =
+            document.getElementById(
+                "score-container"
+            );
+
+        const descriptionContainer =
+            document.getElementById(
+                "description-container"
+            );
+
+        const codeTextPlaceholder =
+            document.getElementById(
+                "code-text-placeholder"
+            );
+
+        const premiumCodeBox =
+            document.getElementById(
+                "premium-code-box"
+            );
+
+        const whatsappRedirectBtn =
+            document.getElementById(
+                "whatsapp-redirect-btn"
+            );
+
+
+        /* =========================================================
+           AUDIO
+        ========================================================== */
+
+        const clickSound =
+            new Audio("click.mp3");
+
+        clickSound.volume = 0.5;
+
+
+        const welcomeSound =
+            new Audio("welcome.mp3");
+
+        welcomeSound.volume = 0.7;
+
+
+        let isAudioUnlocked = false;
+
+
+        function unlockMobileAudio() {
+
+            if (isAudioUnlocked) {
+                return;
+            }
+
+            [
+                clickSound,
+                welcomeSound
+            ].forEach(
+                sound => {
+
+                    try {
+
+                        const promise =
+                            sound.play();
+
+                        if (
+                            promise &&
+                            typeof promise.then === "function"
+                        ) {
+
+                            promise
+                                .then(
+                                    () => {
+
+                                        sound.pause();
+
+                                        sound.currentTime = 0;
+
+                                    }
+                                )
+                                .catch(
+                                    () => {}
+                                );
+
+                        }
+
+                    } catch (error) {
+
+                        console.log(
+                            "Audio unlock skipped."
+                        );
+
+                    }
+
+                }
+            );
+
+            isAudioUnlocked = true;
+        }
+
+
+        /* =========================================================
+           QUIZ DATA
+        ========================================================== */
+
+        const quizData = [
+
+            {
+                id: "q1",
+
+                question:
+                    "كم مرة تشرب قهوة او شاي يوميا؟",
+
+                options: [
+                    "ولا مرة",
+                    "مرة او مرتان",
+                    "من ثلاث الى خمس مرات",
+                    "عايش عليها"
+                ],
+
+                scores: [
+                    100,
+                    70,
+                    35,
+                    0
+                ],
+
+                image: "bg1.png"
+            },
+
+
+            {
+                id: "q2",
+
+                question:
+                    "هل تدخن؟",
+
+                options: [
+                    "لا",
+                    "احيانا",
+                    "يوميا",
+                    "عدة باكيتات باليوم"
+                ],
+
+                scores: [
+                    100,
+                    70,
+                    35,
+                    0
+                ],
+
+                image: "bg2.png"
+            },
+
+
+            {
+                id: "q3",
+
+                question:
+                    "هل تشرب ماء كافي يوميا؟",
+
+                options: [
+                    "نعم",
+                    "أحياناً",
+                    "لا"
+                ],
+
+                scores: [
+                    100,
+                    50,
+                    0
+                ],
+
+                image: "bg3.png"
+            },
+
+
+            {
+                id: "q4",
+                question:
+                    "احد عرض عليك علكة او نعناع بشكل مفاجئ؟",
+
+                options: [
+                    "لا",
+                    "احيانا",
+                    "مرات متكررة"
+                ],
+
+                scores: [
+                    100,
+                    50,
+                    0
+                ],
+
+                image: "bg4.png"
+            },
+
+
+            {
+                id: "q5",
+
+                question:
+                    "تحس بجفاف بالفم؟",
+
+                options: [
+                    "نادرا",
+                    "احيانا",
+                    "دائما"
+                ],
+
+                scores: [
+                    100,
+                    50,
+                    0
+                ],
+
+                image: "bg5.png"
+            },
+
+
+            {
+                id: "q6",
+
+                question:
+                    "تحس الناس تبتعد و انت تحجي؟",
+
+                options: [
+                    "لا",
+                    "يمكن",
+                    "صارت اكثر من مرة"
+                ],
+
+                scores: [
+                    100,
+                    50,
+                    0
+                ],
+
+                image: "bg6.png"
+            }
+
+        ];
+
+
+        /* =========================================================
+           PRELOAD QUESTION IMAGES
+        ========================================================== */
+
+        function preloadImages() {
+
+            quizData.forEach(
+                data => {
+
+                    const img =
+                        new Image();
+
+                    img.src =
+                        data.image;
+
+                }
+            );
+
+        }
+
+        preloadImages();
+
+
+        /* =========================================================
+           STATE
+        ========================================================== */
+
+        let currentQuestionIndex = 0;
+
+        let totalScore = 0;
+
+        let isAnswering = false;
+
+        let quizStarted = false;
+
+        let quizFinished = false;
+
+        let resultSubmitted = false;
+
+        let welcomeTransitioned = false;
+
+        let userResponsesPayload = {};
+
+        let finalGeneratedCode = "";
+
+
+        /* =========================================================
            PARTICLE SYSTEM
-        ========================================================= */
+        ========================================================== */
 
         const particleSystem = {
 
-            canvas:
-                document.getElementById(
-                    'particleCanvas'
-                ),
+            canvas: particleCanvas,
 
             ctx: null,
 
@@ -653,21 +1499,7 @@
                     window.innerHeight;
 
                 this.ctx =
-                    this.canvas.getContext('2d');
-
-
-                window.addEventListener(
-                    'resize',
-                    () => {
-
-                        this.canvas.width =
-                            window.innerWidth;
-
-                        this.canvas.height =
-                            window.innerHeight;
-
-                    }
-                );
+                    this.canvas.getContext("2d");
 
             },
 
@@ -693,11 +1525,20 @@
                         3 +
                         Math.random() * 3;
 
+                    const hue =
+                        320 +
+                        Math.random() * 40;
+
+                    const lightness =
+                        60 +
+                        Math.random() * 20;
+
 
                     this.particles.push({
 
-                        x,
-                        y,
+                        x: x,
+
+                        y: y,
 
                         vx:
                             Math.cos(angle) *
@@ -714,22 +1555,19 @@
                             Math.random() * 3,
 
                         color:
-                            hsl(${
-                                320 +
-                                Math.random() * 40
-                            }, 100%, ${
-                                60 +
-                                Math.random() * 20
-                            }%)
+                            hsl(${hue}, 100%, ${lightness}%)
 
                     });
 
                 }
-
-            },
+                },
 
 
             update() {
+
+                if (!this.ctx) {
+                    return;
+                }
 
                 this.ctx.clearRect(
                     0,
@@ -742,7 +1580,9 @@
                 for (
                     let i =
                         this.particles.length - 1;
+
                     i >= 0;
+
                     i--
                 ) {
 
@@ -751,6 +1591,7 @@
 
 
                     p.x += p.vx;
+
                     p.y += p.vy;
 
                     p.vy += 0.15;
@@ -759,6 +1600,7 @@
 
 
                     if (p.life <= 0) {
+
                         this.particles.splice(
                             i,
                             1
@@ -817,344 +1659,278 @@
 
 
         particleSystem.init();
+
         particleSystem.animate();
 
 
         /* =========================================================
-           AUDIO
-        ========================================================= */
+           THREE.JS SMOKE
+        ========================================================== */
 
-        const clickSound =
-            new Audio('click.mp3');
+        let renderer = null;
 
-        clickSound.volume = 0.5;
+        let scene = null;
 
+        let camera = null;
 
-        const welcomeSound =
-            new Audio('welcome.mp3');
+        let smokeMaterial = null;
 
-        welcomeSound.volume = 0.7;
+        let smokeMesh = null;
 
-
-        let isAudioUnlocked = false;
+        let clock = null;
 
 
-        function unlockMobileAudio() {
+        function initThreeSmoke() {
 
-            if (isAudioUnlocked) {
+            if (
+                typeof THREE ===
+                "undefined"
+            ) {
+
+                console.warn(
+                    "Three.js was not loaded."
+                );
+
                 return;
+
             }
 
 
-            [
-                clickSound,
-                welcomeSound
-            ].forEach(sound => {
+            try {
 
-                const playPromise =
-                    sound.play();
+                scene =
+                    new THREE.Scene();
 
 
-                if (
-                    playPromise !==
-                    undefined
-                ) {
+                camera =
+                    new THREE.Camera();
 
-                    playPromise
-                        .then(() => {
 
-                            sound.pause();
+                renderer =
+                    new THREE.WebGLRenderer({
+                        alpha: true,
+                        antialias: true
+                    });
 
-                            sound.currentTime = 0;
 
-                        })
-                        .catch(() => {});
+                renderer.setPixelRatio(
+                    Math.min(
+                        window.devicePixelRatio || 1,
+                        2
+                    )
+                );
 
-                }
 
-            });
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
+                );
 
 
-            isAudioUnlocked = true;
+                threeContainer.innerHTML =
+                    "";
 
-        }
 
+                threeContainer.appendChild(
+                    renderer.domElement
+                );
 
-        /* =========================================================
-           QUIZ DATA
-        ========================================================= */
 
-        const quizData = [
+                clock =
+                    new THREE.Clock();
 
-            {
-                id: "q1",
 
-                question:
-                    "كم مرة تشرب قهوة او شاي يوميا؟",
+                const textureLoader =
+                    new THREE.TextureLoader();
 
-                options: [
-                    "ولا مرة",
-                    "مرة او مرتان",
-                    "من ثلاث الى خمس مرات",
-                    "عايش عليها"
-                ],
 
-                scores: [
-                    100,
-                    70,
-                    35,
-                    0
-                ],
+                const smokeTexture =
+                    textureLoader.load(
+                        "1000455138.jpg",
 
-                image:
-                    "bg1.png"
-            },
+                        texture => {
 
+                            texture.wrapS =
+                                THREE.RepeatWrapping;
 
-            {
-                id: "q2",
+                            texture.wrapT =
+                                THREE.RepeatWrapping;
 
-                question:
-                    "هل تدخن؟",
+                        },
 
-                options: [
-                    "لا",
-                    "احيانا",
-                    "يوميا",
-                    "عدة باكيتات باليوم"
-                ],
+                        undefined,
 
-                scores: [
-                    100,
-                    70,
-                    35,
-                    0
-                ],
+                        error => {
+                            console.warn(
+                                "Smoke texture could not be loaded.",
+                                error
+                            );
 
-                image:
-                    "bg2.png"
-            },
+                        }
+                    );
 
 
-            {
-                id: "q3",
+                const vertexShaderCode = 
 
-                question:
-                    "هل تشرب ماء كافي يوميا؟",
+                    varying vec2 vUv;
 
-                options: [
-                    "نعم",
-                    "أحياناً",
-                    "لا"
-                ],
+                    void main() {
 
-                scores: [
-                    100,
-                    50,
-                    0
-                ],
+                        vUv = uv;
 
-                image:
-                    "bg3.png"
-            },
+                        gl_Position =
+                            vec4(
+                                position,
+                                1.0
+                            );
 
+                    }
 
-            {
-                id: "q4",
+                ;
 
-                question:
-                    "احد عرض عليك علكة او نعناع بشكل مفاجئ؟",
-                options: [
-                    "لا",
-                    "احيانا",
-                    "مرات متكررة"
-                ],
 
-                scores: [
-                    100,
-                    50,
-                    0
-                ],
+                const fragmentShaderCode = `
 
-                image:
-                    "bg4.png"
-            },
+                    uniform float u_time;
 
+                    uniform vec2 u_resolution;
 
-            {
-                id: "q5",
+                    uniform sampler2D u_texture;
 
-                question:
-                    "تحس بجفاف بالفم؟",
+                    varying vec2 vUv;
 
-                options: [
-                    "نادرا",
-                    "احيانا",
-                    "دائما"
-                ],
 
-                scores: [
-                    100,
-                    50,
-                    0
-                ],
+                    void main() {
 
-                image:
-                    "bg5.png"
-            },
+                        vec2 uv = vUv;
 
 
-            {
-                id: "q6",
+                        float aspect =
+                            u_resolution.x /
+                            max(
+                                u_resolution.y,
+                                1.0
+                            );
 
-                question:
-                    "تحس الناس تبتعد و انت تحجي؟",
 
-                options: [
-                    "لا",
-                    "يمكن",
-                    "صارت اكثر من مرة"
-                ],
+                        vec2 textureUv =
+                            uv;
 
-                scores: [
-                    100,
-                    50,
-                    0
-                ],
 
-                image:
-                    "bg6.png"
-            }
+                        textureUv.x =
+                            (
+                                textureUv.x - 0.5
+                            ) *
+                            aspect +
+                            0.5;
 
-        ];
 
+                        textureUv.x +=
+                            sin(
+                                u_time * 0.035
+                                +
+                                textureUv.y * 2.0
+                            ) *
+                            0.018;
 
-        /* =========================================================
-           PRELOAD IMAGES
-        ========================================================= */
 
-        function preloadImages() {
+                        textureUv.y +=
+                            sin(
+                                u_time * 0.025
+                                +
+                                textureUv.x * 2.0
+                            ) *
+                            0.012;
 
-            quizData.forEach(
-                data => {
 
-                    const img =
-                        new Image();
+                        vec4 tex =
+                            texture2D(
+                                u_texture,
+                                textureUv
+                            );
 
-                    img.src =
-                        data.image;
 
-                }
-            );
+                        float luminance =
+                            dot(
+                                tex.rgb,
+                                vec3(
+                                    0.299,
+                                    0.587,
+                                    0.114
+                                )
+                            );
 
-        }
 
-        preloadImages();
+                        vec3 pink =
+                            vec3(
+                                0.95,
+                                0.08,
+                                0.42
+                            );
 
 
-        /* =========================================================
-           STATE
-        ========================================================= */
+                        vec3 darkPink =
+                            vec3(
+                                0.12,
+                                0.005,
+                                0.04
+                            );
 
-        let currentQuestionIndex = 0;
 
-        let totalScore = 0;
+                        float glow =
+                            smoothstep(
+                                0.18,
+                                0.82,
+                                luminance
+                            );
 
-        let sparkleAnimationId = null;
 
-        let isAnswering = false;
+                        vec3 color =
+                            mix(
+                                darkPink,
+                                pink,
+                                glow * 0.72
+                            );
 
-        let quizStarted = false;
 
-        let quizFinished = false;
+                        float vignette =
+                            1.0 -
+                            smoothstep(
+                                0.2,
+                                0.85,
+                                distance(
+                                    uv,
+                                    vec2(
+                                        0.5,
+                                        0.5
+                                    )
+                                )
+                            );
 
-        let resultSubmitted = false;
 
-        let welcomeTransitioned = false;
+                        color *=
+                            0.55 +
+                            vignette * 0.65;
+                            float alpha =
+                            0.72 +
+                            luminance * 0.18;
 
-        let userResponsesPayload = {};
 
-        let finalGeneratedCode = "";
+                        gl_FragColor =
+                            vec4(
+                                color,
+                                alpha
+                            );
 
+                    }
 
-        /* =========================================================
-           DOM ELEMENTS
-        ========================================================= */
+                `;
 
-        const quizBox =
-            document.getElementById(
-                'quiz-box'
-            );
 
-        const bgLayer =
-            document.getElementById(
-                'bg-layer'
-            );
+                const uniforms = {
 
-        const overlayLayer =
-            document.getElementById(
-                'overlay-layer'
-            );
-
-        const questionText =
-            document.getElementById(
-                'question-text'
-            );
-
-        const optionsContainer =
-            document.getElementById(
-                'options-container'
-            );
-
-
-        const welcomeScreen =
-            document.getElementById(
-                'welcome-screen'
-            );
-
-        const questionScreen =
-            document.getElementById(
-                'question-screen'
-            );
-
-        const resultScreen =
-            document.getElementById(
-                'result-screen'
-            );
-
-
-        const badgeContainer =
-            document.getElementById(
-                'badge-container'
-            );
-
-        const scoreContainer =
-            document.getElementById(
-                'score-container'
-            );
-
-        const descriptionContainer =
-            document.getElementById(
-                'description-container'
-            );
-
-
-        const sparkleCanvas =
-            document.getElementById(
-                'sparkleCanvas'
-            );
-
-        const startQuizBtn =
-            document.getElementById(
-                'start-quiz-btn'
-            );
-
-        const introVideo =
-            document.getElementById(
-                'introVideo'
-            );
-        u_time: {
-                        value: 1.0
+                    u_time: {
+                        value: 0
                     },
 
                     u_resolution: {
@@ -1185,8 +1961,7 @@
                         uniforms:
                             uniforms,
 
-                        transparent:
-                            true
+                        transparent: true
 
                     });
 
@@ -1238,7 +2013,8 @@
                 smokeMaterial &&
                 renderer &&
                 scene &&
-                camera
+                camera &&
+                clock
             ) {
 
                 smokeMaterial
@@ -1258,48 +2034,9 @@
         }
 
 
-        window.addEventListener(
-            'resize',
-            () => {
-
-                if (
-                    renderer &&
-                    smokeMaterial
-                ) {
-
-                    renderer.setSize(
-                        window.innerWidth,
-                        window.innerHeight
-                    );
-
-
-                    smokeMaterial
-                        .uniforms
-                        .u_resolution
-                        .value.set(
-                            window.innerWidth,
-                            window.innerHeight
-                        );
-
-                }
-
-
-                sparkleCanvas.width =
-                    window.innerWidth;
-
-                sparkleCanvas.height =
-                    window.innerHeight;
-
-            }
-        );
-
-
-        initThreeSmoke();
-
-
         /* =========================================================
            SPARKLES
-        ========================================================= */
+        ========================================================== */
 
         function initSparkles() {
 
@@ -1311,7 +2048,14 @@
 
 
             const ctx =
-                sparkleCanvas.getContext('2d');
+                sparkleCanvas.getContext(
+                    "2d"
+                );
+
+
+            if (!ctx) {
+                return;
+            }
 
 
             const particles = [];
@@ -1338,6 +2082,7 @@
                         Math.random() *
                         0.1 -
                         0.05;
+
                     this.speedY =
                         -(
                             Math.random() *
@@ -1349,7 +2094,6 @@
                         Math.random() *
                         0.6 +
                         0.3;
-
                     this.phase =
                         Math.random() *
                         100;
@@ -1451,6 +2195,7 @@
 
                     ctx.fill();
 
+
                     ctx.restore();
 
                 }
@@ -1482,19 +2227,19 @@
 
 
                 particles.forEach(
-                    p => {
+                    particle => {
 
-                        p.update();
-                        p.draw();
+                        particle.update();
+
+                        particle.draw();
 
                     }
                 );
 
 
-                sparkleAnimationId =
-                    requestAnimationFrame(
-                        loop
-                    );
+                requestAnimationFrame(
+                    loop
+                );
 
             }
 
@@ -1504,42 +2249,109 @@
         }
 
 
+        /* =========================================================
+           INITIALIZE VISUALS
+        ========================================================== */
+
+        initThreeSmoke();
+
         initSparkles();
 
 
         /* =========================================================
-           WELCOME / START
-        ========================================================= */
+           RESIZE
+        ========================================================== */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                if (
+                    renderer
+                ) {
+
+                    renderer.setSize(
+                        window.innerWidth,
+                        window.innerHeight
+                    );
+
+                }
+
+
+                if (
+                    smokeMaterial &&
+                    smokeMaterial.uniforms &&
+                    smokeMaterial.uniforms.u_resolution
+                ) {
+                    smokeMaterial
+                        .uniforms
+                        .u_resolution
+                        .value.set(
+                            window.innerWidth,
+                            window.innerHeight
+                        );
+
+                }
+
+
+                sparkleCanvas.width =
+                    window.innerWidth;
+
+                sparkleCanvas.height =
+                    window.innerHeight;
+
+
+                particleCanvas.width =
+                    window.innerWidth;
+
+                particleCanvas.height =
+                    window.innerHeight;
+
+            }
+        );
+
+
+        /* =========================================================
+           WELCOME TRANSITION
+        ========================================================== */
 
         function continueFromWelcome() {
 
-            if (welcomeTransitioned) {
+            if (
+                welcomeTransitioned
+            ) {
+
                 return;
+
             }
 
-            welcomeTransitioned = true;
+
+            welcomeTransitioned =
+                true;
 
 
             welcomeScreen.classList.add(
-                'hidden'
+                "hidden"
             );
 
 
             questionScreen.classList.remove(
-                'hidden'
+                "hidden"
             );
 
 
             overlayLayer.classList.remove(
-                'welcome-overlay'
+                "welcome-overlay"
             );
+
+
             threeContainer.classList.add(
-                'hidden'
+                "hidden"
             );
 
 
             sparkleCanvas.classList.add(
-                'hidden'
+                "hidden"
             );
 
 
@@ -1548,28 +2360,33 @@
 
 
             quizBox.classList.remove(
-                'quiz-pull-out'
+                "quiz-pull-out"
             );
 
 
             quizBox.classList.add(
-                'quiz-pull-in-prepare'
+                "quiz-pull-in-prepare"
             );
 
 
-            welcomeSound.currentTime =
-                0;
+            try {
 
+                welcomeSound.currentTime =
+                    0;
 
-            welcomeSound.play()
-                .catch(() => {});
+                welcomeSound.play()
+                    .catch(
+                        () => {}
+                    );
+
+            } catch (error) {}
 
 
             setTimeout(
                 () => {
 
                     quizBox.style.transition =
-                        '';
+                        "";
 
                     loadQuestion();
 
@@ -1580,23 +2397,32 @@
         }
 
 
+        /* =========================================================
+           START QUIZ
+        ========================================================== */
+
         startQuizBtn.addEventListener(
-            'click',
+            "click",
             () => {
 
-                if (quizStarted) {
+                if (
+                    quizStarted
+                ) {
+
                     return;
+
                 }
 
 
-                quizStarted = true;
+                quizStarted =
+                    true;
 
 
                 unlockMobileAudio();
 
 
                 threeContainer.classList.add(
-                    'dimmed-smoke'
+                    "dimmed-smoke"
                 );
 
 
@@ -1604,43 +2430,59 @@
                     "0.6";
 
 
-                introVideo.muted =
-                    false;
+                /*
+                 * نحاول تشغيل الفيديو بصوت.
+                 * إذا المتصفح منع التشغيل أو الملف
+                 * لم يشتغل، ننتقل للاختبار تلقائياً.
+                 */
+
+                try {
+
+                    introVideo.muted =
+                        false;
+
+                    introVideo.currentTime =
+                        0;
 
 
-                introVideo.currentTime =
-                    0;
+                    const videoPromise =
+                        introVideo.play();
 
 
-                const videoPromise =
-                    introVideo.play();
+                    if (
+                        videoPromise &&
+                        typeof videoPromise.catch ===
+                        "function"
+                    ) {
 
+                        videoPromise.catch(
+                            () => {
 
-                if (
-                    videoPromise !==
-                    undefined
-                ) {
+                                setTimeout(
+                                    continueFromWelcome,
+                                    500
+                                );
 
-                    videoPromise.catch(
-                        () => {
+                            }
+                        );
 
-                            /*
-                             * إذا الفيديو ما اشتغل،
-                             * لا نخلي المستخدم عالق.
-                             */
+                    }
 
-                            setTimeout(
-                                continueFromWelcome,
-                                500
-                            );
+                } catch (error) {
 
-                        }
+                    setTimeout(
+                        continueFromWelcome,
+                        500
                     );
 
                 }
 
 
-                setTimeout(
+                /*
+                 * بعد 2.5 ثانية نخلي الكارد
+                 * يختفي بشكل ناعم.
+                 */
+            setTimeout(
                     () => {
 
                         if (
@@ -1648,7 +2490,7 @@
                         ) {
 
                             quizBox.classList.add(
-                                'quiz-pull-out'
+                                "quiz-pull-out"
                             );
 
                         }
@@ -1659,8 +2501,9 @@
 
 
                 /*
-                 * Fallback:
+                 * Fallback نهائي.
                  * إذا الفيديو ما أطلق ended
+                 * لأي سبب، ما نخلي المستخدم عالق.
                  */
 
                 setTimeout(
@@ -1682,8 +2525,12 @@
         );
 
 
+        /* =========================================================
+           VIDEO EVENTS
+        ========================================================== */
+
         introVideo.addEventListener(
-            'ended',
+            "ended",
             () => {
 
                 continueFromWelcome();
@@ -1693,10 +2540,13 @@
 
 
         introVideo.addEventListener(
-            'error',
+            "error",
             () => {
 
-                if (quizStarted) {
+                if (
+                    quizStarted &&
+                    !welcomeTransitioned
+                ) {
 
                     continueFromWelcome();
 
@@ -1708,7 +2558,7 @@
 
         /* =========================================================
            LOAD QUESTION
-        ========================================================= */
+        ========================================================== */
 
         function loadQuestion() {
 
@@ -1719,18 +2569,25 @@
 
 
             if (!currentData) {
+
                 return;
+
             }
 
 
             quizBox.classList.remove(
-                'quiz-pull-out',
-                'quiz-pull-in-prepare'
+                "quiz-pull-out",
+                "quiz-pull-in-prepare"
             );
 
 
+            /*
+             * هذا هو الإصلاح المهم:
+             * لازم تكون url داخل template string.
+             */
+
             bgLayer.style.backgroundImage =
-                url('${currentData.image}');
+                url("${currentData.image}");
 
 
             questionText.innerText =
@@ -1738,7 +2595,7 @@
 
 
             optionsContainer.innerHTML =
-                '';
+                "";
 
 
             currentData.options.forEach(
@@ -1746,14 +2603,19 @@
                     option,
                     index
                 ) => {
-        const button =
+
+                    const button =
                         document.createElement(
-                            'button'
+                            "button"
                         );
 
 
+                    button.type =
+                        "button";
+
+
                     button.classList.add(
-                        'option-btn'
+                        "option-btn"
                     );
 
 
@@ -1762,11 +2624,11 @@
 
 
                     button.addEventListener(
-                        'click',
-                        (e) => {
+                        "click",
+                        event => {
 
                             handleAnswer(
-                                e,
+                                event,
                                 index
                             );
 
@@ -1782,17 +2644,18 @@
             );
 
 
-            isAnswering = false;
+            isAnswering =
+                false;
 
         }
 
 
         /* =========================================================
            HANDLE ANSWER
-        ========================================================= */
+        ========================================================== */
 
         function handleAnswer(
-            e,
+            event,
             selectedIndex
         ) {
 
@@ -1806,29 +2669,36 @@
             }
 
 
-            isAnswering = true;
+            isAnswering =
+                true;
 
 
             const selectedButton =
-                e.currentTarget;
+                event.currentTarget;
 
 
             const allButtons =
-                optionsContainer
-                    .querySelectorAll(
-                        '.option-btn'
-                    );
-
-
+                optionsContainer.querySelectorAll(
+                    ".option-btn"
+                );
             const currentData =
                 quizData[
                     currentQuestionIndex
                 ];
 
 
+            if (!currentData) {
+
+                isAnswering =
+                    false;
+
+                return;
+
+            }
+
+
             const rect =
-                selectedButton
-                    .getBoundingClientRect();
+                selectedButton.getBoundingClientRect();
 
 
             const burstX =
@@ -1862,29 +2732,34 @@
                 ];
 
 
-            clickSound.currentTime =
-                0;
+            try {
 
+                clickSound.currentTime =
+                    0;
 
-            clickSound.play()
-                .catch(() => {});
+                clickSound.play()
+                    .catch(
+                        () => {}
+                    );
+
+            } catch (error) {}
 
 
             selectedButton.classList.add(
-                'btn-selected'
+                "btn-selected"
             );
 
 
             allButtons.forEach(
-                btn => {
+                button => {
 
                     if (
-                        btn !==
+                        button !==
                         selectedButton
                     ) {
 
-                        btn.classList.add(
-                            'disabled'
+                        button.classList.add(
+                            "disabled"
                         );
 
                     }
@@ -1897,7 +2772,7 @@
                 () => {
 
                     quizBox.classList.add(
-                        'quiz-pull-out'
+                        "quiz-pull-out"
                     );
 
 
@@ -1913,16 +2788,16 @@
                             ) {
 
                                 quizBox.style.transition =
-                                    'none';
+                                    "none";
 
 
                                 quizBox.classList.remove(
-                                    'quiz-pull-out'
+                                    "quiz-pull-out"
                                 );
 
 
                                 quizBox.classList.add(
-                                    'quiz-pull-in-prepare'
+                                    "quiz-pull-in-prepare"
                                 );
 
 
@@ -1930,14 +2805,15 @@
                                     () => {
 
                                         quizBox.style.transition =
-                                            '';
+                                            "";
 
                                         loadQuestion();
 
                                     },
                                     50
                                 );
-                                } else {
+
+                            } else {
 
                                 shipDataAndShowResults();
 
@@ -1956,7 +2832,7 @@
 
         /* =========================================================
            SCORE
-        ========================================================= */
+        ========================================================== */
 
         function calculateScore() {
 
@@ -1980,8 +2856,8 @@
 
 
         /* =========================================================
-           RESULT
-        ========================================================= */
+           RESULT TYPE
+        ========================================================== */
 
         function getResultByScore(
             score
@@ -2008,11 +2884,9 @@
             return "Pink Revival";
 
         }
-
-
         /* =========================================================
            CODE GENERATOR
-        ========================================================= */
+        ========================================================== */
 
         function generatePinkWhisperCode() {
 
@@ -2025,7 +2899,7 @@
                     now.getDate()
                 ).padStart(
                     2,
-                    '0'
+                    "0"
                 );
 
 
@@ -2034,7 +2908,7 @@
                     now.getMonth() + 1
                 ).padStart(
                     2,
-                    '0'
+                    "0"
                 );
 
 
@@ -2080,16 +2954,19 @@
             }
 
 
-            return (
-                PW-${day}${month}${year}-${randomQuad}
-            );
+            /*
+             * الإصلاح:
+             * PW- لازم تكون داخل template string.
+             */
+
+            return PW-${day}${month}${year}-${randomQuad};
 
         }
 
 
         /* =========================================================
            SEND DATA TO GOOGLE SHEETS
-        ========================================================= */
+        ========================================================== */
 
         async function sendToGoogleSheets(
             payload
@@ -2098,23 +2975,20 @@
             try {
 
                 /*
-                 * text/plain مهم هنا حتى يكون
-                 * الطلب Simple Request
-                 * ونتجنب preflight.
+                 * text/plain يمنع مشكلة CORS preflight
+                 * مع Apps Script.
                  *
-                 * no-cors يعني أن المتصفح لا يستطيع
-                 * قراءة response من Apps Script.
+                 * Apps Script يستلم المحتوى كنص
+                 * ثم JSON.parse(e.postData.contents)
                  */
 
                 await fetch(
                     GOOGLE_SCRIPT_URL,
                     {
 
-                        method:
-                            "POST",
+                        method: "POST",
 
-                        mode:
-                            "no-cors",
+                        mode: "no-cors",
 
                         headers: {
                             "Content-Type":
@@ -2136,7 +3010,8 @@
 
 
                 return true;
-                } catch (error) {
+
+            } catch (error) {
 
                 console.error(
                     "Google Sheets sync error:",
@@ -2153,16 +3028,21 @@
 
         /* =========================================================
            SEND DATA + SHOW RESULTS
-        ========================================================= */
+        ========================================================== */
 
         function shipDataAndShowResults() {
 
-            if (quizFinished) {
+            if (
+                quizFinished
+            ) {
+
                 return;
+
             }
 
 
-            quizFinished = true;
+            quizFinished =
+                true;
 
 
             const finalCalculatedScore =
@@ -2195,7 +3075,6 @@
 
                 q2:
                     userResponsesPayload["q2"] || "",
-
                 q3:
                     userResponsesPayload["q3"] || "",
 
@@ -2216,9 +3095,13 @@
              * ظهور النتيجة للمستخدم.
              */
 
-            if (!resultSubmitted) {
+            if (
+                !resultSubmitted
+            ) {
 
-                resultSubmitted = true;
+                resultSubmitted =
+                    true;
+
 
                 sendToGoogleSheets(
                     sheetPayload
@@ -2238,9 +3121,19 @@
 
         /* =========================================================
            CONFETTI
-        ========================================================= */
+        ========================================================== */
 
         function triggerFastConfetti() {
+
+            if (
+                typeof confetti !==
+                "function"
+            ) {
+
+                return;
+
+            }
+
 
             const duration =
                 2 * 1000;
@@ -2311,7 +3204,7 @@
 
         /* =========================================================
            SHOW RESULTS
-        ========================================================= */
+        ========================================================== */
 
         function showResults(
             resultWord,
@@ -2320,32 +3213,38 @@
         ) {
 
             questionScreen.classList.add(
-                'hidden'
+                "hidden"
             );
 
 
             resultScreen.classList.remove(
-                'hidden'
+                "hidden"
             );
 
 
             quizBox.style.transition =
-                '';
+                "";
 
 
             quizBox.classList.remove(
-                'quiz-pull-out',
-                'quiz-pull-in-prepare'
+                "quiz-pull-out",
+                "quiz-pull-in-prepare"
             );
+
+
             bgLayer.classList.add(
-                'hidden'
+                "hidden"
             );
 
 
             overlayLayer.classList.add(
-                'welcome-overlay'
+                "welcome-overlay"
             );
 
+
+            /*
+             * Result background
+             */
 
             if (
                 resultWord ===
@@ -2358,7 +3257,6 @@
 
                 triggerFastConfetti();
 
-
             } else if (
                 resultWord ===
                 "Pink Balance"
@@ -2367,11 +3265,7 @@
                 document.body.style.backgroundImage =
                     "url('bg2.png')";
 
-
-            } else if (
-                resultWord ===
-                "Pink Revival"
-            ) {
+            } else {
 
                 document.body.style.backgroundImage =
                     "url('bg3.png')";
@@ -2385,15 +3279,20 @@
 
             scoreContainer.innerText =
                 ${finalCalculatedScore}%;
-
-
-            descriptionContainer.innerHTML =
+            descriptionContainer.innerText =
                 "تحب تعرف شنو يعني هاي النتيجة؟ اضغط على الزر بالاسفل 👇";
 
 
             codeTextPlaceholder.innerText =
                 code;
 
+
+            /*
+             * WhatsApp message:
+             *
+             * PW-XXXXXXXX-XXXX
+             * ارسل الكود
+             */
 
             const eliteMessage =
                 ${code}\nارسل الكود;
@@ -2413,7 +3312,7 @@
 
         /* =========================================================
            COPY CODE
-        ========================================================= */
+        ========================================================== */
 
         async function copyCodeToClipboard() {
 
@@ -2437,12 +3336,11 @@
                         finalGeneratedCode
                     );
 
-
                 } else {
 
                     const textarea =
                         document.createElement(
-                            'textarea'
+                            "textarea"
                         );
 
 
@@ -2451,10 +3349,10 @@
 
 
                     textarea.style.position =
-                        'fixed';
+                        "fixed";
 
                     textarea.style.opacity =
-                        '0';
+                        "0";
 
 
                     document.body.appendChild(
@@ -2468,7 +3366,7 @@
 
 
                     document.execCommand(
-                        'copy'
+                        "copy"
                     );
 
 
@@ -2494,7 +3392,43 @@
 
         }
 
+
+        /* =========================================================
+           COPY BUTTON
+        ========================================================== */
+
+        premiumCodeBox.addEventListener(
+            "click",
+            copyCodeToClipboard
+        );
+
+
+        /* =========================================================
+           SAFETY
+           Make sure the initial screen is ready.
+        ========================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+                welcomeScreen.classList.remove(
+                    "hidden"
+                );
+
+                questionScreen.classList.add(
+                    "hidden"
+                );
+
+                resultScreen.classList.add(
+                    "hidden"
+                );
+
+            }
+        );
+
     </script>
 
 </body>
+
 </html>
