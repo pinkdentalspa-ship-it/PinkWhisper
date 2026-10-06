@@ -167,6 +167,7 @@
             transition:
                 opacity 0.8s ease-in-out;
         }
+
         /* =========================================================
            PARTICLES
         ========================================================= */
@@ -376,6 +377,7 @@
 
             background:
                 rgba(255, 20, 147, 0.18);
+
             border:
                 1px solid rgba(255, 20, 147, 0.4);
 
@@ -582,6 +584,7 @@
             border-radius: 30px;
 
             padding: 22px 16px;
+
             width: 100%;
 
             border:
@@ -801,6 +804,7 @@
 
         .premium-code-box span.copy-lbl {
             font-size: 0.7rem;
+
             background: #ff66a3;
 
             color: #fff;
@@ -1005,6 +1009,7 @@
                     <span>
                         Pink Whisper
                     </span>
+
                     <span class="heart-icon">
                         🤍
                     </span>
@@ -1180,6 +1185,7 @@
             document.getElementById(
                 "start-quiz-btn"
             );
+
         const introVideo =
             document.getElementById(
                 "introVideo"
@@ -1366,6 +1372,7 @@
 
             {
                 id: "q4",
+
                 question:
                     "احد عرض عليك علكة او نعناع بشكل مفاجئ؟",
 
@@ -1555,12 +1562,13 @@
                             Math.random() * 3,
 
                         color:
-                            hsl(${hue}, 100%, ${lightness}%)
+                            `hsl(${hue}, 100%, ${lightness}%)`
 
                     });
 
                 }
-                },
+
+            },
 
 
             update() {
@@ -1761,6 +1769,7 @@
                         undefined,
 
                         error => {
+
                             console.warn(
                                 "Smoke texture could not be loaded.",
                                 error
@@ -1770,7 +1779,7 @@
                     );
 
 
-                const vertexShaderCode = 
+                const vertexShaderCode = `
 
                     varying vec2 vUv;
 
@@ -1786,7 +1795,7 @@
 
                     }
 
-                ;
+                `;
 
 
                 const fragmentShaderCode = `
@@ -1911,7 +1920,9 @@
                         color *=
                             0.55 +
                             vignette * 0.65;
-                            float alpha =
+
+
+                        float alpha =
                             0.72 +
                             luminance * 0.18;
 
@@ -2094,6 +2105,7 @@
                         Math.random() *
                         0.6 +
                         0.3;
+
                     this.phase =
                         Math.random() *
                         100;
@@ -2152,12 +2164,12 @@
 
 
                     ctx.fillStyle =
-                        rgba(
+                        `rgba(
                             255,
                             255,
                             255,
                             ${pulseOpacity}
-                        );
+                        )`;
 
 
                     ctx.shadowBlur =
@@ -2283,6 +2295,7 @@
                     smokeMaterial.uniforms &&
                     smokeMaterial.uniforms.u_resolution
                 ) {
+
                     smokeMaterial
                         .uniforms
                         .u_resolution
@@ -2482,7 +2495,8 @@
                  * بعد 2.5 ثانية نخلي الكارد
                  * يختفي بشكل ناعم.
                  */
-            setTimeout(
+
+                setTimeout(
                     () => {
 
                         if (
@@ -2587,7 +2601,7 @@
              */
 
             bgLayer.style.backgroundImage =
-                url("${currentData.image}");
+                `url("${currentData.image}")`;
 
 
             questionText.innerText =
@@ -2681,6 +2695,8 @@
                 optionsContainer.querySelectorAll(
                     ".option-btn"
                 );
+
+
             const currentData =
                 quizData[
                     currentQuestionIndex
@@ -2884,6 +2900,8 @@
             return "Pink Revival";
 
         }
+
+
         /* =========================================================
            CODE GENERATOR
         ========================================================== */
@@ -2959,7 +2977,7 @@
              * PW- لازم تكون داخل template string.
              */
 
-            return PW-${day}${month}${year}-${randomQuad};
+            return `PW-${day}${month}${year}-${randomQuad}`;
 
         }
 
@@ -3068,13 +3086,14 @@
                     resultWord,
 
                 score:
-                    ${finalCalculatedScore}%,
+                    `${finalCalculatedScore}%`,
 
                 q1:
                     userResponsesPayload["q1"] || "",
 
                 q2:
                     userResponsesPayload["q2"] || "",
+
                 q3:
                     userResponsesPayload["q3"] || "",
 
@@ -3082,353 +3101,4 @@
                     userResponsesPayload["q4"] || "",
 
                 q5:
-                    userResponsesPayload["q5"] || "",
-
-                q6:
-                    userResponsesPayload["q6"] || ""
-
-            };
-
-
-            /*
-             * نرسل البيانات بدون ما نوقف
-             * ظهور النتيجة للمستخدم.
-             */
-
-            if (
-                !resultSubmitted
-            ) {
-
-                resultSubmitted =
-                    true;
-
-
-                sendToGoogleSheets(
-                    sheetPayload
-                );
-
-            }
-
-
-            showResults(
-                resultWord,
-                finalCalculatedScore,
-                finalGeneratedCode
-            );
-
-        }
-
-
-        /* =========================================================
-           CONFETTI
-        ========================================================== */
-
-        function triggerFastConfetti() {
-
-            if (
-                typeof confetti !==
-                "function"
-            ) {
-
-                return;
-
-            }
-
-
-            const duration =
-                2 * 1000;
-
-
-            const end =
-                Date.now() +
-                duration;
-
-
-            (
-                function frame() {
-
-                    confetti({
-
-                        particleCount:
-                            12,
-
-                        angle:
-                            60,
-
-                        spread:
-                            65,
-
-                        origin: {
-                            x: 0,
-                            y: 0.85
-                        }
-
-                    });
-
-
-                    confetti({
-
-                        particleCount:
-                            12,
-
-                        angle:
-                            120,
-
-                        spread:
-                            65,
-
-                        origin: {
-                            x: 1,
-                            y: 0.85
-                        }
-
-                    });
-
-
-                    if (
-                        Date.now() <
-                        end
-                    ) {
-
-                        requestAnimationFrame(
-                            frame
-                        );
-
-                    }
-
-                }
-            )();
-
-        }
-
-
-        /* =========================================================
-           SHOW RESULTS
-        ========================================================== */
-
-        function showResults(
-            resultWord,
-            finalCalculatedScore,
-            code
-        ) {
-
-            questionScreen.classList.add(
-                "hidden"
-            );
-
-
-            resultScreen.classList.remove(
-                "hidden"
-            );
-
-
-            quizBox.style.transition =
-                "";
-
-
-            quizBox.classList.remove(
-                "quiz-pull-out",
-                "quiz-pull-in-prepare"
-            );
-
-
-            bgLayer.classList.add(
-                "hidden"
-            );
-
-
-            overlayLayer.classList.add(
-                "welcome-overlay"
-            );
-
-
-            /*
-             * Result background
-             */
-
-            if (
-                resultWord ===
-                "Pink Glow"
-            ) {
-
-                document.body.style.backgroundImage =
-                    "url('bg1.png')";
-
-
-                triggerFastConfetti();
-
-            } else if (
-                resultWord ===
-                "Pink Balance"
-            ) {
-
-                document.body.style.backgroundImage =
-                    "url('bg2.png')";
-
-            } else {
-
-                document.body.style.backgroundImage =
-                    "url('bg3.png')";
-
-            }
-
-
-            badgeContainer.innerText =
-                resultWord;
-
-
-            scoreContainer.innerText =
-                ${finalCalculatedScore}%;
-            descriptionContainer.innerText =
-                "تحب تعرف شنو يعني هاي النتيجة؟ اضغط على الزر بالاسفل 👇";
-
-
-            codeTextPlaceholder.innerText =
-                code;
-
-
-            /*
-             * WhatsApp message:
-             *
-             * PW-XXXXXXXX-XXXX
-             * ارسل الكود
-             */
-
-            const eliteMessage =
-                ${code}\nارسل الكود;
-
-
-            const encodedText =
-                encodeURIComponent(
-                    eliteMessage
-                );
-
-
-            whatsappRedirectBtn.href =
-                https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodedText};
-
-        }
-
-
-        /* =========================================================
-           COPY CODE
-        ========================================================== */
-
-        async function copyCodeToClipboard() {
-
-            if (
-                !finalGeneratedCode
-            ) {
-
-                return;
-
-            }
-
-
-            try {
-
-                if (
-                    navigator.clipboard &&
-                    navigator.clipboard.writeText
-                ) {
-
-                    await navigator.clipboard.writeText(
-                        finalGeneratedCode
-                    );
-
-                } else {
-
-                    const textarea =
-                        document.createElement(
-                            "textarea"
-                        );
-
-
-                    textarea.value =
-                        finalGeneratedCode;
-
-
-                    textarea.style.position =
-                        "fixed";
-
-                    textarea.style.opacity =
-                        "0";
-
-
-                    document.body.appendChild(
-                        textarea
-                    );
-
-
-                    textarea.focus();
-
-                    textarea.select();
-
-
-                    document.execCommand(
-                        "copy"
-                    );
-
-
-                    textarea.remove();
-
-                }
-
-
-                alert(
-                    "تم نسخ كود الملف الرقمي بنجاح: " +
-                    finalGeneratedCode
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Failed to copy text:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        /* =========================================================
-           COPY BUTTON
-        ========================================================== */
-
-        premiumCodeBox.addEventListener(
-            "click",
-            copyCodeToClipboard
-        );
-
-
-        /* =========================================================
-           SAFETY
-           Make sure the initial screen is ready.
-        ========================================================== */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            () => {
-
-                welcomeScreen.classList.remove(
-                    "hidden"
-                );
-
-                questionScreen.classList.add(
-                    "hidden"
-                );
-
-                resultScreen.classList.add(
-                    "hidden"
-                );
-
-            }
-        );
-
-    </script>
-
-</body>
-
-</html>
+                    userRespo
