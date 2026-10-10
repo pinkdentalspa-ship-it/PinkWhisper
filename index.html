@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pink Dental Spa - Enter the PINK world</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            background-color: #1a0511;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 10px 0;
+            transition: background-image 0.8s ease, background-color 0.8s ease;
+        }
+
+        /* THREE.JS BACKGROUND */
+        #threeCanvasContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transition: opacity 1.2s ease-in-out, filter 1.2s ease-in-out;
+            opacity: 1;
+        }
+
+        .dimmed-smoke {
+            filter: none;
+        }
+
+        /* QUESTION BACKGROUND */
+        .bg-slider {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        /* OVERLAY */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 2;
+            transition: background 1s ease;
+        }
+
+        .welcome-overlay {
+            background: transparent !important;
+        }
+
+        /* SPARKLES & PARTICLES */
+        #sparkleCanvas, #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #sparkleCanvas { z-index: 3; opacity: 1; transition: opacity 0.8s ease-in-out; }
+        #particleCanvas { z-index: 5; }
+
+        /* MAIN CONTAINER */
+        .quiz-container {
+            position: relative;
+            z-index: 4;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            width: 95%;
+            max-width: 420px;
+            text-align: center;
+            transform: scale(1);
+            opacity: 1;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+
+        .card-box {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 35px 25px;
+            box-shadow: 0 25px 60px rgba(180, 20, 100, 0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .welcome-video {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            outline: none;
+            background-color: #000;
+            object-fit: cover;
+            margin-bottom: 25px;
+        }
+
+        .main-title {
+            font-size: 1.8rem;
+            color: #2b353c;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            direction: rtl;
+        }
+
+        .sub-title {
+            font-size: 0.95rem;
+            color: #8c969e;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-weight: 500;
+            max-width: 95%;
+            direction: rtl;
+        }
+
+        .start-btn {
+            background: linear-gradient(to left, #ff00cc, #ffc0cb);
+            border: none;
+            padding: 14px 40px;
+            border-radius: 18px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 0, 204, 0.25);
+            direction: rtl;
+            width: 90%;
+            max-width: 280px;
+        }
+
+        .start-btn:hover, .start-btn:active {
+            transform: scale(1.02);
+            box-shadow: 0 12px 30px rgba(255, 0, 204, 0.35);
+        }
+
+        /* QUESTION STYLES */
+        .option-btn {
+            position: relative;
+            z-index: 100;
+            background: rgba(255, 20, 147, 0.25);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 20, 147, 0.5);
+            padding: 16px 20px;
+            border-radius: 18px;
+            color: #ffffff;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: right;
+            width: 100%;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .option-btn:hover, .option-btn:active {
+            background: rgba(255, 20, 147, 0.55);
+            border-color: rgba(255, 20, 147, 0.9);
+        }
+
+        .quiz-pull-out { opacity: 0; transform: translateY(-12px) scale(0.98); }
+        .quiz-pull-in-prepare { opacity: 0; transform: translateY(12px) scale(0.98); transition: none; }
+
+        h2 {
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .options-list { display: flex; flex-direction: column; gap: 4px; }
+
+        .btn-selected {
+            background: #ff1493 !important;
+            border-color: #ff1493 !important;
+            color: #ffffff !important;
+            pointer-events: none;
+        }
+
+        .disabled { pointer-events: none; opacity: 0.2; }
+        .hidden { display: none !important; }
+
+        /* RESULT SCREEN */
+        #result-screen {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 30px;
+            padding: 22px 16px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .result-intro { font-size: 0.9rem; font-weight: 700; color: #ff66a3; margin-bottom: 4px; }
+        .result-badge { font-size: 2.3rem; font-weight: 800; color: #ffffff; margin-bottom: 2px; }
+        .result-score { font-size: 1.3rem; font-weight: 600; color: #ffffff; margin-bottom: 10px; }
+        .result-description { font-size: 0.95rem; font-weight: 600; color: #ffffff; line-height: 1.5; margin-bottom: 20px; text-align: center; }
+
+        .premium-code-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px dashed rgba(255, 102, 163, 0.6);
+            padding: 8px 12px;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 290px;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 16px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 290px;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .quiz-container { width: 94%; }
+            .card-box { padding: 28px 20px; }
+            .main-title { font-size: 1.55rem; }
+            .result-badge { font-size: 1.9rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="threeCanvasContainer"></div>
+    <div class="bg-slider" id="bg-layer"></div>
+    <div class="overlay welcome-overlay" id="overlay-layer"></div>
+    <canvas id="sparkleCanvas"></canvas>
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="quiz-container" id="quiz-box">
+
+        <!-- WELCOME SCREEN -->
+        <div id="welcome-screen" class="welcome-screen">
+            <div class="card-box">
+                <video class="welcome-video" id="introVideo" playsinline preload="auto">
+                    <source src="intro.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                </video>
+                <div class="main-title">مرحباً بك في عالم PINK</div>
+                <div class="sub-title">تبدأ التفاصيل بهمسة خفيفة، هادئة و ناعمة</div>
+                <button class="start-btn" id="start-quiz-btn" type="button">
+                    <span>Pink Whisper</span>
+                    <span class="heart-icon">🤍</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- QUESTION SCREEN -->
+        <div id="question-screen" class="hidden">
+            <h2 id="question-text">جاري تحضير تجربة الـ Spa...</h2>
+            <div class="options-list" id="options-container"></div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="hidden">
+            <div class="result-intro">Your Whisper Result</div>
+            <div id="badge-container" class="result-badge"></div>
+            <div id="score-container" class="result-score"></div>
+            <div id="description-container" class="result-description"></div>
+            <div class="premium-code-box" id="premium-code-box">
+                <span id="code-text-placeholder">PW-XXXXXX</span>
+                <span style="font-size: 0.7rem; background: #ff66a3; color: #fff; padding: 2px 6px; border-radius: 5px;">اضغط للنسخ</span>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="whatsapp-btn" id="whatsapp-redirect-btn">
+                Pink Whisper
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9O2Mwbo00G0Ykxfdd3ydgUzVoBxgAS-M7DeTe13unaeOKY_0cJyxZbwkVaDD7VuEd/exec";
+        const WHATSAPP_PHONE_NUMBER = "9647777900545";
+
+        const threeContainer = document.getElementById("threeCanvasContainer");
+        const bgLayer = document.getElementById("bg-layer");
+        const overlayLayer = document.getElementById("overlay-layer");
+        const sparkleCanvas = document.getElementById("sparkleCanvas");
+        const particleCanvas = document.getElementById("particleCanvas");
+        const quizBox = document.getElementById("quiz-box");
+        const welcomeScreen = document.getElementById("welcome-screen");
+        const questionScreen = document.getElementById("question-screen");
+        const resultScreen = document.getElementById("result-screen");
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const startQuizBtn = document.getElementById("start-quiz-btn");
+        const introVideo = document.getElementById("introVideo");
+        const badgeContainer = document.getElementById("badge-container");
+        const scoreContainer = document.getElementById("score-container");
+        const descriptionContainer = document.getElementById("description-container");
+        const codeTextPlaceholder = document.getElementById("code-text-placeholder");
+        const premiumCodeBox = document.getElementById("premium-code-box");
+        const whatsappRedirectBtn = document.getElementById("whatsapp-redirect-btn");
+
+        const clickSound = new Audio("click.mp3");
+        clickSound.volume = 0.5;
+        const welcomeSound = new Audio("welcome.mp3");
+        welcomeSound.volume = 0.7;
+
+        let isAudioUnlocked = false;
+        function unlockMobileAudio() {
+            if (isAudioUnlocked) return;
+            [clickSound, welcomeSound].forEach(sound => {
+                try {
+                    const p = sound.play();
+                    if (p) p.then(() => { sound.pause(); sound.currentTime = 0; }).catch(() => {});
+                } catch (e) {}
+            });
+            isAudioUnlocked = true;
+        }
+
+        const quizData = [
+            { id: "q1", question: "كم مرة تشرب قهوة او شاي يوميا؟", options: ["ولا مرة", "مرة او مرتان", "من ثلاث الى خمس مرات", "عايش عليها"], scores: [100, 70, 35, 0], image: "bg1.png" },
+            { id: "q2", question: "هل تدخن؟", options: ["لا", "احيانا", "يوميا", "عدة باكيتات باليوم"], scores: [100, 70, 35, 0], image: "bg2.png" },
+            { id: "q3", question: "هل تشرب ماء كافي يوميا؟", options: ["نعم", "أحياناً", "لا"], scores: [100, 50, 0], image: "bg3.png" },
+            { id: "q4", question: "احد عرض عليك علكة او نعناع بشكل مفاجئ؟", options: ["لا", "احيانا", "مرات متكررة"], scores: [100, 50, 0], image: "bg4.png" },
+            { id: "q5", question: "تحس بجفاف بالفم؟", options: ["نادرا", "احيانا", "دائما"], scores: [100, 50, 0], image: "bg5.png" },
+            { id: "q6", question: "تحس الناس تبتعد و انت تحجي؟", options: ["لا", "يمكن", "صارت اكثر من مرة"], scores: [100, 50, 0], image: "bg6.png" }
+        ];
+
+        function preloadImages() {
+            quizData.forEach(d => { const img = new Image(); img.src = d.image; });
+        }
+        preloadImages();
+
+        let currentQuestionIndex = 0;
+        let totalScore = 0;
+        let isAnswering = false;
+        let quizStarted = false;
+        let quizFinished = false;
+        let welcomeTransitioned = false;
+        let userResponsesPayload = {};
+        let finalGeneratedCode = "";
+
+        /* PARTICLE SYSTEM */
+        const particleSystem = {
+            canvas: particleCanvas, ctx: null, particles: [],
+            init() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; this.ctx = this.canvas.getContext("2d"); },
+            burstParticles(x, y, count = 30) {
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 * i) / count;
+                    const velocity = 3 + Math.random() * 3;
+                    this.particles.push({
+                        x: x, y: y, vx: Math.cos(angle) * velocity, vy: Math.sin(angle) * velocity,
+                        life: 1, size: 3 + Math.random() * 3, color: `hsl(${320 + Math.random() * 40}, 100%, 70%)`
+                    });
+                }
+            },
+            update() {
+                if (!this.ctx) return;
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life -= 0.02;
+                    if (p.life <= 0) { this.particles.splice(i, 1); continue; }
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.life;
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    this.ctx.restore();
+                }
+            },
+            animate() { this.update(); requestAnimationFrame(() => this.animate()); }
+        };
+        particleSystem.init(); particleSystem.animate();
+
+        /* THREE.JS BACKGROUND */
+        let renderer, scene, camera, smokeMaterial, clock;
+        function initThreeSmoke() {
+            if (typeof THREE === "undefined") return;
+            try {
+                scene = new THREE.Scene();
+                camera = new THREE.Camera();
+                renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                threeContainer.appendChild(renderer.domElement);
+                clock = new THREE.Clock();
+
+                const textureLoader = new THREE.TextureLoader();
+                const smokeTexture = textureLoader.load("1000455138.jpg", t => { t.wrapS = t.wrapT = THREE.RepeatWrapping; });
+
+                const uniforms = {
+                    u_time: { value: 0 },
+                    u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                    u_texture: { value: smokeTexture }
+                };
+
+                smokeMaterial = new THREE.ShaderMaterial({
+                    vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position, 1.0); }`,
+                    fragmentShader: `
+                        uniform float u_time; uniform vec2 u_resolution; uniform sampler2D u_texture; varying vec2 vUv;
+                        void main() {
+                            vec2 uv = vUv;
+                            vec2 textureUv = uv;
+                            textureUv.x += sin(u_time * 0.035 + textureUv.y * 2.0) * 0.018;
+                            textureUv.y += sin(u_time * 0.025 + textureUv.x * 2.0) * 0.012;
+                            vec4 tex = texture2D(u_texture, textureUv);
+                            float luminance = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
+                            vec3 pink = vec3(0.95, 0.08, 0.42);
+                            vec3 darkPink = vec3(0.12, 0.005, 0.04);
+                            vec3 color = mix(darkPink, pink, smoothstep(0.18, 0.82, luminance) * 0.72);
+                            gl_FragColor = vec4(color, 0.72 + luminance * 0.18);
+                        }`,
+                    uniforms: uniforms, transparent: true
+                });
+
+                scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), smokeMaterial));
+                (function anim() { requestAnimationFrame(anim); if (smokeMaterial && clock) { smokeMaterial.uniforms.u_time.value = clock.getElapsedTime(); renderer.render(scene, camera); } })();
+            } catch (e) { threeContainer.style.display = "none"; }
+        }
+
+        /* SPARKLES */
+        function initSparkles() {
+            sparkleCanvas.width = window.innerWidth; sparkleCanvas.height = window.innerHeight;
+            const ctx = sparkleCanvas.getContext("2d");
+            if (!ctx) return;
+            const particles = Array.from({ length: 25 }, () => ({
+                x: Math.random() * sparkleCanvas.width, y: Math.random() * sparkleCanvas.height,
+                size: Math.random() * 2.5 + 1, speedY: -(Math.random() * 0.15 + 0.05), opacity: Math.random() * 0.6 + 0.3
+            }));
+            (function loop() {
+                ctx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+                particles.forEach(p => {
+                    p.y += p.speedY; if (p.y < -20) p.y = sparkleCanvas.height + 20;
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                    ctx.beginPath(); ctx.arc(0, 0, p.size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+                });
+                requestAnimationFrame(loop);
+            })();
+        }
+
+        initThreeSmoke();
+        initSparkles();
+
+        window.addEventListener("resize", () => {
+            if (renderer) renderer.setSize(window.innerWidth, window.innerHeight);
+            sparkleCanvas.width = particleCanvas.width = window.innerWidth;
+            sparkleCanvas.height = particleCanvas.height = window.innerHeight;
+        });
+
+        /* TRANSITION TO QUESTIONS */
+        function continueFromWelcome() {
+            if (welcomeTransitioned) return;
+            welcomeTransitioned = true;
+
+            try { introVideo.pause(); } catch (e) {}
+
+            quizBox.classList.add("quiz-pull-out");
+
+            setTimeout(() => {
+                welcomeScreen.classList.add("hidden");
+                questionScreen.classList.remove("hidden");
+                overlayLayer.classList.remove("welcome-overlay");
+
+                /* Hide the smoke canvas completely so it cannot tint or darken
+                   the question backgrounds. */
+                threeContainer.style.opacity = "0";
+                threeContainer.style.pointerEvents = "none";
+                threeContainer.classList.remove("dimmed-smoke");
+
+                /* Keep the overlay fully transparent. */
+                overlayLayer.style.background = "transparent";
+                bgLayer.style.opacity = "1";
+
+                quizBox.classList.remove("quiz-pull-out");
+                quizBox.classList.add("quiz-pull-in-prepare");
+
+                try {
+                    welcomeSound.currentTime = 0;
+                    welcomeSound.play().catch(() => {});
+                } catch (e) {}
+
+                setTimeout(() => {
+                    quizBox.style.transition = "";
+                    loadQuestion();
+                }, 50);
+            }, 300);
+        }
+
+        /* START BUTTON: play the intro video first, then begin the quiz. */
+        startQuizBtn.addEventListener("click", () => {
+            if (quizStarted) return;
+            quizStarted = true;
+            unlockMobileAudio();
+
+            let fallbackTimer = null;
+
+            const startQuizSafely = () => {
+                if (fallbackTimer) {
+                    clearTimeout(fallbackTimer);
+                    fallbackTimer = null;
+                }
+                if (!welcomeTransitioned) continueFromWelcome();
+            };
+
+            /* If the video fails to load or play, do not leave the user stuck. */
+            introVideo.addEventListener("error", startQuizSafely, { once: true });
+
+            try {
+                introVideo.currentTime = 0;
+                const playPromise = introVideo.play();
+
+                if (playPromise && typeof playPromise.then === "function") {
+                    playPromise.catch(() => {
+                        fallbackTimer = setTimeout(startQuizSafely, 1200);
+                    });
+                }
+
+                /* Safety fallback in case a mobile browser never fires `ended`. */
+                fallbackTimer = setTimeout(() => {
+                    if (!welcomeTransitioned) startQuizSafely();
+                }, 30000);
+
+            } catch (error) {
+                fallbackTimer = setTimeout(startQuizSafely, 1200);
+            }
+        });
+
+        /* The intended transition happens when the intro finishes. */
+        introVideo.addEventListener("ended", () => {
+            if (!welcomeTransitioned) continueFromWelcome();
+        });
+
+        /* LOAD QUESTION */
+        function loadQuestion() {
+            const currentData = quizData[currentQuestionIndex];
+            if (!currentData) return;
+
+            quizBox.classList.remove("quiz-pull-out", "quiz-pull-in-prepare");
+            bgLayer.style.backgroundImage = `url("${currentData.image}")`;
+            questionText.innerText = currentData.question;
+            optionsContainer.innerHTML = "";
+
+            currentData.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.classList.add("option-btn");
+                button.innerText = option;
+                button.addEventListener("click", event => handleAnswer(event, index));
+                optionsContainer.appendChild(button);
+            });
+
+            isAnswering = false;
+        }
+
+        /* ANSWER QUESTION */
+        function handleAnswer(event, selectedIndex) {
+            if (isAnswering || quizFinished) return;
+            isAnswering = true;
+
+            const selectedButton = event.currentTarget;
+            const currentData = quizData[currentQuestionIndex];
+            const rect = selectedButton.getBoundingClientRect();
+
+            particleSystem.burstParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 35);
+            totalScore += currentData.scores[selectedIndex];
+            userResponsesPayload[currentData.id] = currentData.options[selectedIndex];
+
+            try { clickSound.currentTime = 0; clickSound.play().catch(() => {}); } catch (e) {}
+
+            selectedButton.classList.add("btn-selected");
+
+            setTimeout(() => {
+                quizBox.classList.add("quiz-pull-out");
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < quizData.length) {
+                        quizBox.style.transition = "none";
+                        quizBox.classList.remove("quiz-pull-out");
+                        quizBox.classList.add("quiz-pull-in-prepare");
+                        setTimeout(() => { quizBox.style.transition = ""; loadQuestion(); }, 50);
+                    } else {
+                        shipDataAndShowResults();
+                    }
+                }, 400);
+            }, 400);
+        }
+
+        function calculateScore() {
+            return Number((totalScore / quizData.length).toFixed(1));
+        }
+
+        function getResultByScore(score) {
+            if (score >= 91.1) return "Pink Glow";
+            if (score >= 70) return "Pink Balance";
+            return "Pink Revival";
+        }
+
+        function generatePinkWhisperCode() {
+            const now = new Date();
+            const d = String(now.getDate()).padStart(2, "0");
+            const m = String(now.getMonth() + 1).padStart(2, "0");
+            const y = String(now.getFullYear()).slice(-2);
+            const rand = Math.floor(1000 + Math.random() * 9000);
+            return `PW-${d}${m}${y}-${rand}`;
+        }
+
+        async function sendToGoogleSheets(payload) {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST", mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=UTF-8" },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) {}
+        }
+
+        function shipDataAndShowResults() {
+            if (quizFinished) return;
+            quizFinished = true;
+
+            const score = calculateScore();
+            const resultWord = getResultByScore(score);
+            finalGeneratedCode = generatePinkWhisperCode();
+
+            sendToGoogleSheets({
+                code: finalGeneratedCode, result: resultWord, score: `${score}%`,
+                q1: userResponsesPayload["q1"] || "", q2: userResponsesPayload["q2"] || "",
+                q3: userResponsesPayload["q3"] || "", q4: userResponsesPayload["q4"] || "",
+                q5: userResponsesPayload["q5"] || "", q6: userResponsesPayload["q6"] || ""
+            });
+
+            showResults(resultWord, score, finalGeneratedCode);
+        }
+
+        function showResults(resultWord, score, code) {
+            questionScreen.classList.add("hidden");
+            resultScreen.classList.remove("hidden");
+            quizBox.classList.remove("quiz-pull-out", "quiz-pull-in-prepare");
+
+            /* The result uses the body background, not the previous question image. */
+            bgLayer.style.opacity = "0";
+            threeContainer.style.opacity = "0";
+
+            if (resultWord === "Pink Glow") {
+                document.body.style.backgroundImage = "url('bg1.png')";
+                if (typeof confetti === "function") confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            } else if (resultWord === "Pink Balance") {
+                document.body.style.backgroundImage = "url('bg2.png')";
+            } else {
+                document.body.style.backgroundImage = "url('bg3.png')";
+            }
+
+            badgeContainer.innerText = resultWord;
+            scoreContainer.innerText = `${score}%`;
+            descriptionContainer.innerText = "تحب تعرف شنو يعني هاي النتيجة؟ اضغط على الزر بالاسفل 👇";
+            codeTextPlaceholder.innerText = code;
+
+            const msg = encodeURIComponent(`${code}\nارسل الكود`);
+            whatsappRedirectBtn.href = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${msg}`;
+        }
+
+        premiumCodeBox.addEventListener("click", async () => {
+            if (!finalGeneratedCode) return;
+            try {
+                await navigator.clipboard.writeText(finalGeneratedCode);
+                alert("تم نسخ الكود بنجاح: " + finalGeneratedCode);
+            } catch (e) {
+                alert("الكود الخاص بك هو: " + finalGeneratedCode);
+            }
+        });
+    </script>
+</body>
+</html>
