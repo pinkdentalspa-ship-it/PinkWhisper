@@ -739,9 +739,9 @@
             descriptionContainer.innerText = "تحب تعرف شنو يعني هاي النتيجة؟ اضغط على الزر بالاسفل 👇";
             codeTextPlaceholder.innerText = code;
 
-            const msg = encodeURIComponent(هلاا
-خلصت اختبار Pink Whisper و مستعد اعرف شنو تكشف نتيجتي 🤔);
-whatsappRedirectBtn.href = https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${msg};
+            const msg = encodeURIComponent(`هلاا
+خلصت اختبار Pink Whisper و مستعد اعرف شنو تكشف نتيجتي 🤔`);
+whatsappRedirectBtn.href = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${msg}`;
         }
 
         premiumCodeBox.addEventListener("click", async () => {
